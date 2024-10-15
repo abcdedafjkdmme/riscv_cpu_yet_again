@@ -11,10 +11,18 @@ module mem (
   output reg o_busy
 );
 
-reg [31:0] mem_array [32];
+reg [31:0] mem_array [2**8];
+
+generate
+  genvar idx;
+  for(idx = 0; idx < 32; idx = idx+1) begin: test_mem
+    wire [31:0] tmp_mem_array;
+    assign tmp_mem_array = mem_array[idx];
+  end
+endgenerate
 
 initial
- $readmemb("data.txt",mem_array); //Assuming name of txt is data.txt
+ $readmemh("example_program.txt",mem_array); //Assuming name of txt is data.txt
 
 parameter S_IDLE = 1;
 parameter S_READ = 2;
@@ -44,12 +52,12 @@ always @(posedge i_clk) begin
       if(i_exec && !o_fin && i_we) begin
         o_busy <= 1;
         r_state <= S_WRITE;
-        $display("mem wil begin write");
+        //$display("mem wil begin write");
       end
       else if(i_exec && !o_fin && !i_we) begin
         o_busy <= 1;
         r_state <= S_READ;
-        $display("mem will begin read");
+        //$display("mem will begin read");
       end
     end
     else if(r_state == S_WRITE) begin
@@ -70,7 +78,7 @@ always @(posedge i_clk) begin
       o_fin <= 1;
       //o_busy <= 0;
       r_state <= S_IDLE;
-      $display("finished mem wrote %b to addr %d ",i_data,i_addr);
+      //$display("finished mem wrote %b to addr %d ",i_data,i_addr);
     end
     else if(r_state == S_READ) begin
       o_busy <= 1;
@@ -92,7 +100,7 @@ always @(posedge i_clk) begin
       else begin
         $display("ERROR IN MEM, INVALID SEL");
       end
-      $display("finished mem outputted %b from addr %d",mem_array[word_addr],i_addr);
+      //$display("finished mem outputted %b from addr %d",mem_array[word_addr],i_addr);
       o_fin <= 1;
       //o_busy <= 0;
       r_state <= S_IDLE;

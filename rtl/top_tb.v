@@ -57,7 +57,7 @@ module tb_top;
 
   initial begin
     #10 reset <= 0;
-    #500 $finish;
+    #1000 $finish;
   end
 
 endmodule

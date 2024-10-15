@@ -105,7 +105,7 @@ module cpu (
         end
       end else if (r_state == S_REQ_MEM_READ) begin
         if (!i_busy) begin
-          $display("cpu requeseted read from mem");
+          //$display("cpu requeseted read from mem");
           o_addr <= pc;
           o_we <= 0;
           o_mem_exec <= 1;
@@ -113,7 +113,7 @@ module cpu (
         end
       end else if (r_state == S_END_MEM_READ) begin
         if (i_fin) begin
-          $display("cpu fetched instr %b from addr %d", i_data, o_addr);
+          $display("cpu fetched instr %h from addr %h", i_data, o_addr);
           o_addr <= 0;
           o_we <= 0;
           o_mem_exec <= 0;
@@ -125,7 +125,7 @@ module cpu (
         // mem read instr
         if (`IS_MEM_READ_INSTR(instr)) begin
           if (!i_busy) begin
-            $display("cpu requested read instr");
+            //$display("cpu requested read instr");
             o_addr <= reg_file[rs1] + load_instr_offset;
             o_we <= 0;
             o_sel <= instr_sel;
@@ -135,7 +135,7 @@ module cpu (
         end  //mem write instr
         else if (`IS_MEM_WRITE_INSTR(instr)) begin
           if (!i_busy) begin
-            $display("cpu requested write instr");
+            //$display("cpu requested write instr");
             o_addr <= reg_file[rs1] + store_instr_offset;
             o_data <= reg_file[rs2];
             o_we <= 1;
@@ -152,8 +152,8 @@ module cpu (
         end  //jalr instr
         else if (`IS_JALR_INSTR(instr)) begin
           $display("cpu executing jalr instr");
-          $display("next instr addr is ", pc + 4);
-          $display("calculated pc is ", pc + reg_file[rs1] + load_instr_offset);
+          $display("next instr addr is %h", pc + 4);
+          $display("calculated pc is %h", pc + reg_file[rs1] + load_instr_offset);
           reg_file[rd] <= pc + 4;
           pc <= pc + reg_file[rs1] + load_instr_offset - 4;  // -4 because we add it  in S_INC
           r_state <= S_INC;
@@ -161,7 +161,7 @@ module cpu (
         else if (`IS_BRANCH_INSTR(instr)) begin
           $display("cpu executing branch instr");
           if (alu_o_will_branch) begin
-            $display("cpu branch taken to addr %d", pc + branch_instr_offset);
+            $display("cpu branch taken to addr %h", pc + branch_instr_offset);
             pc <= pc + branch_instr_offset - 4;  //-4 because we add it in S_INC
             r_state <= S_INC;
           end
@@ -170,33 +170,36 @@ module cpu (
             r_state <= S_INC;
           end
         end else if(is_alu_instr) begin
-          $display("cpu executing alu instr");
-          $display("cpu alu i_a is %d",alu_i_a);
-          $display("cpu alu i_b is %d",alu_i_b);
+          if(is_alu_imm_instr) $display("cpu executing alu imm instr");
+          else if(is_alu_reg_instr) $display("cpu executing alu reg instr");
+          else $display("ERROR");
+
+          $display("cpu alu i_a is %h",alu_i_a);
+          $display("cpu alu i_b is %h",alu_i_b);
           $display("alu op is %b",alu_i_op);
           $display("alu sub/arith shift is %b",alu_sub_or_arith_shift);
-          $display("cpu alu output is %d",alu_o_y);
+          $display("cpu alu output is %h",alu_o_y);
           $display("cpu stored result to rd %d",rd);
           reg_file[rd] <= alu_o_y;
           r_state <= S_INC;
         end else if(`IS_LUI_INSTR(instr)) begin
           $display("cpu executing lui instr");
-          $display("stored %d to rd %d",u_instr_offset,rd);
+          $display("stored %h to rd %d",u_instr_offset,rd);
           reg_file[rd] <= u_instr_offset;
           r_state <= S_INC;
         end else if (`IS_AUIPC_INSTR(instr)) begin
           $display("cpu executing auipc instr");
-          $display("cpu new pc is %d",pc + $signed(u_instr_offset));
+          $display("cpu new pc is %h",pc + $signed(u_instr_offset));
           pc <= pc + $signed(u_instr_offset) - 4;
           r_state <= S_INC;
         end else begin
-          $display("ERROR UNKNOWN INSTR %b at addr %d", instr, pc);
+          $display("ERROR UNKNOWN INSTR %b at addr %h", instr, pc);
         end
 
       end else if (r_state == S_END_MEM_READ_INSTR) begin
         if (i_fin) begin
           $display("cpu finished mem read instr");
-          $display("read %d from addr %d to reg %d", i_data, o_addr, rd);
+          $display("read %h from addr %h to rd %d", i_data, o_addr, rd);
           reg_file[rd] <= i_data;
           o_addr <= 0;
           o_we <= 0;
@@ -207,7 +210,7 @@ module cpu (
       end else if (r_state == S_END_MEM_WRITE_INSTR) begin
         if (i_fin) begin
           $display("cpu finished mem write instr");
-          $display("written %d to addr %d", o_data, o_addr);
+          $display("written %h to addr %h", o_data, o_addr);
           o_addr <= 0;
           o_data <= 0;
           o_we <= 0;
@@ -217,7 +220,7 @@ module cpu (
         end
       end else if (r_state == S_INC) begin
         $display("finished instr");
-        $display("next pc is %d", pc + 4);
+        $display("next pc is %h", pc + 4);
         $display("\n");
         pc <= pc + 4;
         o_fin <= 1;

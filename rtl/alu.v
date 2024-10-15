@@ -12,8 +12,8 @@ module alu (
   always @(*) begin
     case (i_op)
       3'b000: begin
-        if (i_sub) o_y = i_a - i_b;
-        else o_y = i_a + i_b;
+        if (i_sub) o_y = $signed(i_a) - $signed(i_b);
+        else o_y = $signed(i_a) + $signed(i_b);
       end
       3'b001:  o_y = i_a << i_b[4:0];
       3'b010:  o_y = $signed(i_a) < $signed(i_b);
