@@ -1,0 +1,7 @@
+`define IS_MEM_READ_INSTR(instr) (instr[6:0] == 'b00000_11)
+`define IS_MEM_WRITE_INSTR(instr) (instr[6:0] == 'b01000_11)
+`define IS_JAL_INSTR(instr) (instr[6:0] == 'b11011_11)
+`define IS_JALR_INSTR(instr) (instr[6:0] == 'b11001_11)
+`define IS_BRANCH_INSTR(instr) (instr[6:0] == 'b11000_11)
+`define IS_REG_ALU_INSTR(instr) (instr[6:0] == 'b01100_11)
+`define IS_IMM_ALU_INSTR(instr) (instr[6:0] == 'b00100_11)
