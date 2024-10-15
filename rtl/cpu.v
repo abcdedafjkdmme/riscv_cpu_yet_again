@@ -37,6 +37,7 @@ module cpu (
   wire [31:0] load_instr_offset = $signed(instr[31:20]);
   wire [31:0] jalr_instr_offset = $signed({instr[31], instr[19:12], instr[20], instr[30:21], 1'b0});
   wire [31:0] branch_instr_offset = $signed({instr[31], instr[7], instr[30:25], instr[11:8], 1'b0});
+  wire [31:0] u_instr_offset = {instr[31:12],12'b0};
   wire [2:0] instr_sel = instr[14:12];
   wire [2:0] branch_op = instr[14:12];
   wire [2:0] op = instr[14:12];
@@ -176,7 +177,17 @@ module cpu (
           $display("alu sub/arith shift is %b",alu_sub_or_arith_shift);
           $display("cpu alu output is %d",alu_o_y);
           $display("cpu stored result to rd %d",rd);
-          reg_file[rd] = alu_o_y;
+          reg_file[rd] <= alu_o_y;
+          r_state <= S_INC;
+        end else if(`IS_LUI_INSTR(instr)) begin
+          $display("cpu executing lui instr");
+          $display("stored %d to rd %d",u_instr_offset,rd);
+          reg_file[rd] <= u_instr_offset;
+          r_state <= S_INC;
+        end else if (`IS_AUIPC_INSTR(instr)) begin
+          $display("cpu executing auipc instr");
+          $display("cpu new pc is %d",pc + $signed(u_instr_offset));
+          pc <= pc + $signed(u_instr_offset) - 4;
           r_state <= S_INC;
         end else begin
           $display("ERROR UNKNOWN INSTR %b at addr %d", instr, pc);
