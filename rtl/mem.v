@@ -26,70 +26,124 @@ module mem (
   parameter S_IDLE = 1;
   parameter S_READ = 2;
   parameter S_WRITE = 3;
+  parameter S_END_WRITE = 4;
 
 
   integer r_state = S_IDLE;
 
-  wire [31:0] word_addr;
-  assign word_addr = i_wb_addr >> 2;  // division by 4
+  reg [31:0] local_addr = 32'hFFFFFFFF;
+  reg [31:0] local_data = 32'hFFFFFFFF;
+  reg [2:0] local_sel = 3'b111;
+  reg local_we = 1'h1;
+
+  wire [31:0] local_word_addr = local_addr >> 2;  // division by 4
+  wire [1:0] local_byte_offset = local_addr[1:0];
 
 
   always @(posedge i_clk) begin
     if (i_reset) begin
       r_state <= S_IDLE;
-      o_wb_ack <= 0;
-      o_wb_data <= 0;
-      o_wb_stall <= 0;
     end
     if (r_state == S_IDLE) begin
-      o_wb_ack  <= 0;
-      o_wb_stall <= 0;
-      o_wb_data <= 32'hFFFFFFFF;
-      if (i_wb_stb && !o_wb_stall && i_wb_we) begin
-        o_wb_stall  <= 1;
-        r_state <= S_WRITE;
-        $display("mem wil begin write");
-      end else if (i_wb_stb && !o_wb_stall && !i_wb_we) begin
-        o_wb_stall  <= 1;
-        r_state <= S_READ;
-        $display("mem will begin read");
+      if (i_wb_stb && !o_wb_stall) begin
+        local_addr <= i_wb_addr;
+        local_data <= i_wb_data;
+        local_sel  <= i_wb_sel;
+        local_we   <= i_wb_we;
+
+        if (i_wb_we) begin
+          r_state <= S_WRITE;
+          $display("mem wil begin write");
+        end else begin
+          r_state <= S_READ;
+          $display("mem will begin read");
+        end
       end
     end else if (r_state == S_WRITE) begin
-      if (i_wb_sel == 'b000) begin
-        mem_array[word_addr][7:0] <= i_wb_data[7:0];
-      end else if (i_wb_sel == 'b001) begin
-        mem_array[word_addr][15:0] <= i_wb_data[15:0];
-      end else if (i_wb_sel == 'b010) begin
-        mem_array[word_addr] <= i_wb_data;
+      if (local_sel == 'b000) begin
+        case (local_byte_offset)
+          2'b00: mem_array[local_word_addr][7:0] <= local_data[7:0];
+          2'b01: mem_array[local_word_addr][15:8] <= local_data[7:0];
+          2'b10: mem_array[local_word_addr][23:16] <= local_data[7:0];
+          2'b11: mem_array[local_word_addr][31:24] <= local_data[7:0];
+        endcase
+      end else if (local_sel == 'b001) begin
+        case (local_byte_offset)
+          2'b00: mem_array[local_word_addr][15:0] <= local_data[15:0];
+          2'b01: mem_array[local_word_addr][31:16] <= local_data[15:0];
+          2'b10: mem_array[local_word_addr+1][15:0] <= local_data[15:0];
+          2'b11: mem_array[local_word_addr+1][31:16] <= local_data[15:0];
+        endcase
+      end else if (local_sel == 'b010) begin
+        mem_array[local_word_addr] <= local_data;
       end else begin
         $display("ERROR IN MEM, INVALID SEL");
       end
-      o_wb_data  <= 32'hFFFFFFFF;
-      o_wb_ack   <= 1;
-      //o_wb_stall <= 0;
+      r_state <= S_END_WRITE;
+    end else if (r_state == S_END_WRITE) begin
+      $display("mem finished write");
       r_state <= S_IDLE;
-      $display("finished mem wrote %h to addr %h ",i_wb_data,i_wb_addr);
     end else if (r_state == S_READ) begin
-      if (i_wb_sel == 'b000) begin
-        o_wb_data <= $signed(mem_array[word_addr][7:0]);
-      end else if (i_wb_sel == 'b001) begin
-        o_wb_data <= $signed(mem_array[word_addr][15:0]);
-      end else if (i_wb_sel == 'b010) begin
-        o_wb_data <= mem_array[word_addr];
-      end else if (i_wb_sel == 'b100) begin
-        o_wb_data <= {24'b0, mem_array[word_addr][7:0]};
-      end else if (i_wb_sel == 'b101) begin
-        o_wb_data <= {16'b0, mem_array[word_addr][15:0]};
-      end else begin
-        $display("ERROR IN MEM, INVALID SEL");
-      end
-      $display("finished mem outputted %h from addr %h",mem_array[word_addr],i_wb_addr);
-      o_wb_ack   <= 1;
-      //o_wb_stall <= 0;
       r_state <= S_IDLE;
+      $display("mem finished read");
     end else begin
       $display("ERROR INVALID STATE IN MEMORY");
     end
+  end
+
+  wire [31:0] tmp0 = mem_array[local_word_addr];
+  wire [31:0] tmp1 = mem_array[local_word_addr+1];
+
+  always @(*) begin
+    o_wb_ack   = 0;
+    o_wb_data  = 32'hFFFFFFFF;
+    o_wb_stall = 1;
+
+    case (r_state)
+      S_IDLE: o_wb_stall = 0;
+      S_END_WRITE: begin
+        o_wb_ack   = 1;
+        o_wb_stall = 0;
+      end
+      S_READ: begin
+        if (local_sel == 'b000) begin
+          case (local_byte_offset)
+            2'b00: o_wb_data = {{24{tmp0[31]}}, tmp0[7:0]};
+            2'b01: o_wb_data = {{24{tmp0[31]}}, tmp0[15:8]};
+            2'b10: o_wb_data = {{24{tmp0[31]}}, tmp0[23:16]};
+            2'b11: o_wb_data = {{24{tmp0[31]}}, tmp0[31:24]};
+          endcase
+        end else if (local_sel == 'b001) begin
+          case (local_byte_offset)
+            2'b00: o_wb_data = {{16{tmp0[31]}}, tmp0[15:0]};
+            2'b01: o_wb_data = {{16{tmp0[31]}}, tmp0[31:16]};
+            2'b10: o_wb_data = {{16{tmp1[31]}}, tmp1[15:0]};
+            2'b11: o_wb_data = {{16{tmp1[31]}}, tmp1[31:16]};
+          endcase
+        end else if (local_sel == 'b010) begin
+          o_wb_data = mem_array[local_word_addr];
+        end else if (local_sel == 'b100) begin
+          case (local_byte_offset)
+            2'b00: o_wb_data = {{24{1'b0}}, tmp0[7:0]};
+            2'b01: o_wb_data = {{24{1'b0}}, tmp0[15:8]};
+            2'b10: o_wb_data = {{24{1'b0}}, tmp0[23:16]};
+            2'b11: o_wb_data = {{24{1'b0}}, tmp0[31:24]};
+          endcase
+        end else if (local_sel == 'b101) begin
+          case (local_byte_offset)
+            2'b00: o_wb_data = {{16{1'b0}}, tmp0[15:0]};
+            2'b01: o_wb_data = {{16{1'b0}}, tmp0[31:16]};
+            2'b10: o_wb_data = {{16{1'b0}}, tmp1[15:0]};
+            2'b11: o_wb_data = {{16{1'b0}}, tmp1[31:16]};
+          endcase
+        end else begin
+          $display("ERROR IN MEM, INVALID SEL");
+        end
+
+        o_wb_ack   = 1;
+        o_wb_stall = 0;
+      end
+    endcase
   end
 
 endmodule

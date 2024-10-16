@@ -55,9 +55,12 @@ module tb_top;
     $dumpvars(0, tb_top);
   end
 
+  // always @(posedge clk) begin
+  //   $display("cpu mem ack %b at time %t", mem_o_wb_ack, $time);
+  // end
   initial begin
     #10 reset <= 0;
-    #1000 $finish;
+    #2000 $finish;
   end
 
 endmodule

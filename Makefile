@@ -17,7 +17,7 @@ clean:
 	rm -rf $(SYNTH_BUILD_DIR)
 
 sim: $(IVERILOG_SRCS)
-	iverilog $(IVERILOG_SRCS)
+	iverilog $(IVERILOG_SRCS) -Irtl
 	./a.out
 
 synth: $(SYNTH_V_SRCS)

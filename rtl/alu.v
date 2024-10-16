@@ -16,7 +16,7 @@ module alu (
         else o_y = $signed(i_a) + $signed(i_b);
       end
       3'b001:  o_y = i_a << i_b[4:0];
-      3'b010:  o_y = $signed(i_a) < $signed(i_b);
+      3'b010:  o_y = ($signed(i_a) < $signed(i_b));
       3'b011:  o_y = i_a < i_b;
       3'b100:  o_y = i_a ^ i_b;
       3'b101: begin
@@ -35,9 +35,9 @@ module alu (
     end else if (i_branch_op == 3'b001) begin
       o_will_branch = !(i_a == i_b);
     end else if (i_branch_op == 3'b100) begin
-      o_will_branch = $signed(i_a) < $signed(i_b);
+      o_will_branch = ($signed(i_a) < $signed(i_b));
     end else if (i_branch_op == 3'b101) begin
-      o_will_branch = $signed(i_a) >= $signed(i_b);
+      o_will_branch = ($signed(i_a) >= $signed(i_b));
     end else if (i_branch_op == 3'b110) begin
       o_will_branch = i_a < i_b;
     end else if (i_branch_op == 3'b111) begin

@@ -1,3 +1,5 @@
+`include "macros.v"
+
 module cpu (
     input wire i_clk,
     input wire i_reset,
@@ -90,60 +92,51 @@ module cpu (
       $display("Resetting CPU \n");
       pc <= 0;
       instr <= 0;
-      o_wb_sel <= 'b010;
-      o_wb_we <= 0;
-      o_wb_ack <= 0;
-      o_wb_stb <= 0;
-      o_wb_data <= 0;
-      o_wb_addr <= 0;
-      o_wb_stall <= 0;
+      o_wb_sel <= 3'b010;
       r_state <= S_IDLE;
     end else if (r_state == S_IDLE) begin
-      o_wb_ack <= 0;
+      o_wb_stall <= 0;
       if (i_wb_stb && !o_wb_stall) begin
         o_wb_stall <= 1;
         r_state <= S_REQ_MEM_READ;
       end
     end else if (r_state == S_REQ_MEM_READ) begin
       if (!i_wb_stall) begin
-        $display("cpu requeseted read from mem");
         o_wb_addr <= pc;
         o_wb_we   <= 0;
         o_wb_stb  <= 1;
-        r_state   <= S_END_MEM_READ;
+        r_state <= S_END_MEM_READ;
+        $display("cpu requeseted read from mem");
       end
     end else if (r_state == S_END_MEM_READ) begin
       o_wb_stb <= 0;
       if (i_wb_ack) begin
-        $display("cpu fetched instr %h from addr %h", i_wb_data, o_wb_addr);
-        o_wb_addr <= 0;
-        o_wb_we <= 0;
-        instr <= i_wb_data;
+        $display("cpu fetched instr %h at pc %h", i_wb_data,pc);
+        instr   <= i_wb_data;
         r_state <= S_EXEC;
       end
-
     end else if (r_state == S_EXEC) begin
-      $display("current pc is %h", pc);
-      // mem read instr
       if (`IS_MEM_READ_INSTR(instr)) begin
         if (!i_wb_stall) begin
-          $display("cpu requested read instr");
           o_wb_addr <= reg_file[rs1] + load_instr_offset;
           o_wb_we   <= 0;
           o_wb_sel  <= instr_sel;
           o_wb_stb  <= 1;
-          r_state   <= S_END_MEM_READ_INSTR;
+          r_state <= S_END_MEM_READ_INSTR;
+          $display("cpu requested read instr");
+          $display("cpu will read from addr %h",reg_file[rs1] + store_instr_offset);
         end
       end  //mem write instr
         else if (`IS_MEM_WRITE_INSTR(instr)) begin
         if (!i_wb_stall) begin
-          $display("cpu requested write instr");
           o_wb_addr <= reg_file[rs1] + store_instr_offset;
           o_wb_data <= reg_file[rs2];
           o_wb_we   <= 1;
           o_wb_sel  <= instr_sel;
           o_wb_stb  <= 1;
-          r_state   <= S_END_MEM_WRITE_INSTR;
+          r_state <= S_END_MEM_WRITE_INSTR;
+          $display("cpu requested write instr");
+          $display("cpu will write %h to addr %h",reg_file[rs2],reg_file[rs1] + store_instr_offset);
         end
       end  //jal instr
         else if (`IS_JAL_INSTR(instr)) begin
@@ -196,40 +189,28 @@ module cpu (
       end else begin
         $display("ERROR UNKNOWN INSTR %b at addr %h", instr, pc);
       end
-
     end else if (r_state == S_END_MEM_READ_INSTR) begin
-      o_wb_stb <= 0;
       if (i_wb_ack) begin
+        o_wb_stb <= 0;
         $display("cpu finished mem read instr");
-        $display("read %h from addr %h to rd x", i_wb_data, o_wb_addr, rd);
+        $display("read %h to rd x", i_wb_data, rd);
         reg_file[rd] <= i_wb_data;
-        o_wb_addr <= 0;
-        o_wb_we <= 0;
-        o_wb_sel <= 'b010;
-        //o_wb_stb <= 0;
         r_state <= S_INC;
       end
     end else if (r_state == S_END_MEM_WRITE_INSTR) begin
-      o_wb_stb <= 0;
       if (i_wb_ack) begin
+        o_wb_stb <= 0;
         $display("cpu finished mem write instr");
-        $display("written %h to addr %h", o_wb_data, o_wb_addr);
-        o_wb_addr <= 0;
-        o_wb_data <= 0;
-        o_wb_we   <= 0;
-        o_wb_sel  <= 'b010;
-        //o_wb_stb <= 0;
-        r_state   <= S_INC;
+        //$display("written %h to addr %h", o_wb_data, o_wb_addr);
+        r_state <= S_INC;
       end
     end else if (r_state == S_INC) begin
       $display("finished instr");
       $display("\n");
       pc <= pc + 4;
-      o_wb_ack <= 1;
+      o_wb_ack   <= 1;
       o_wb_stall <= 0;
       r_state <= S_IDLE;
     end
-
-
   end
 endmodule
