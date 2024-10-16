@@ -1,5 +1,5 @@
 $date
-	Tue Oct 15 20:02:40 2024
+	Wed Oct 16 07:48:14 2024
 $end
 $version
 	Icarus Verilog
@@ -8,16 +8,16 @@ $timescale
 	1s
 $end
 $scope module tb_top $end
-$var wire 1 ! cpu_i_exec $end
-$var wire 1 " mem_o_fin $end
-$var wire 32 # mem_o_data [31:0] $end
-$var wire 1 $ mem_o_busy $end
-$var wire 1 % mem_i_we $end
-$var wire 3 & mem_i_sel [2:0] $end
-$var wire 1 ' mem_i_exec $end
-$var wire 32 ( mem_i_data [31:0] $end
-$var wire 32 ) mem_i_addr [31:0] $end
-$var wire 1 * cpu_o_fin $end
+$var wire 1 ! cpu_i_wb_stb $end
+$var wire 1 " mem_o_wb_stall $end
+$var wire 32 # mem_o_wb_data [31:0] $end
+$var wire 1 $ mem_o_wb_ack $end
+$var wire 1 % mem_i_wb_we $end
+$var wire 1 & mem_i_wb_stb $end
+$var wire 3 ' mem_i_wb_sel [2:0] $end
+$var wire 32 ( mem_i_wb_data [31:0] $end
+$var wire 32 ) mem_i_wb_addr [31:0] $end
+$var wire 1 * cpu_o_wb_ack $end
 $var parameter 32 + CLK_PERIOD $end
 $var reg 1 , clk $end
 $var reg 1 - reset $end
@@ -28,8 +28,8 @@ $var wire 3 0 alu_i_branch_op [2:0] $end
 $var wire 3 1 alu_i_op [2:0] $end
 $var wire 1 2 alu_i_sub $end
 $var wire 1 , i_clk $end
-$var wire 1 ! i_exec $end
 $var wire 1 - i_reset $end
+$var wire 1 ! i_wb_stb $end
 $var wire 1 3 is_alu_instr $end
 $var wire 32 4 u_instr_offset [31:0] $end
 $var wire 32 5 store_instr_offset [31:0] $end
@@ -42,9 +42,9 @@ $var wire 32 ; jalr_instr_offset [31:0] $end
 $var wire 1 < is_alu_reg_instr $end
 $var wire 1 = is_alu_imm_instr $end
 $var wire 3 > instr_sel [2:0] $end
-$var wire 1 " i_fin $end
-$var wire 32 ? i_data [31:0] $end
-$var wire 1 $ i_busy $end
+$var wire 1 " i_wb_stall $end
+$var wire 32 ? i_wb_data [31:0] $end
+$var wire 1 $ i_wb_ack $end
 $var wire 3 @ branch_op [2:0] $end
 $var wire 32 A branch_instr_offset [31:0] $end
 $var wire 1 B alu_sub_or_arith_shift $end
@@ -59,369 +59,370 @@ $var parameter 32 J S_IDLE $end
 $var parameter 32 K S_INC $end
 $var parameter 32 L S_REQ_MEM_READ $end
 $var reg 32 M instr [31:0] $end
-$var reg 32 N o_addr [31:0] $end
-$var reg 32 O o_data [31:0] $end
-$var reg 1 * o_fin $end
-$var reg 1 ' o_mem_exec $end
-$var reg 3 P o_sel [2:0] $end
-$var reg 1 % o_we $end
-$var reg 32 Q pc [31:0] $end
-$var integer 32 R r_state [31:0] $end
+$var reg 1 * o_wb_ack $end
+$var reg 32 N o_wb_addr [31:0] $end
+$var reg 32 O o_wb_data [31:0] $end
+$var reg 3 P o_wb_sel [2:0] $end
+$var reg 1 Q o_wb_stall $end
+$var reg 1 & o_wb_stb $end
+$var reg 1 % o_wb_we $end
+$var reg 32 R pc [31:0] $end
+$var integer 32 S r_state [31:0] $end
 $scope begin genblk1[0] $end
-$var wire 32 S reg_file_tmp [31:0] $end
-$var parameter 2 T idx $end
+$var wire 32 T reg_file_tmp [31:0] $end
+$var parameter 2 U idx $end
 $upscope $end
 $scope begin genblk1[1] $end
-$var wire 32 U reg_file_tmp [31:0] $end
-$var parameter 2 V idx $end
+$var wire 32 V reg_file_tmp [31:0] $end
+$var parameter 2 W idx $end
 $upscope $end
 $scope begin genblk1[2] $end
-$var wire 32 W reg_file_tmp [31:0] $end
-$var parameter 3 X idx $end
+$var wire 32 X reg_file_tmp [31:0] $end
+$var parameter 3 Y idx $end
 $upscope $end
 $scope begin genblk1[3] $end
-$var wire 32 Y reg_file_tmp [31:0] $end
-$var parameter 3 Z idx $end
+$var wire 32 Z reg_file_tmp [31:0] $end
+$var parameter 3 [ idx $end
 $upscope $end
 $scope begin genblk1[4] $end
-$var wire 32 [ reg_file_tmp [31:0] $end
-$var parameter 4 \ idx $end
+$var wire 32 \ reg_file_tmp [31:0] $end
+$var parameter 4 ] idx $end
 $upscope $end
 $scope begin genblk1[5] $end
-$var wire 32 ] reg_file_tmp [31:0] $end
-$var parameter 4 ^ idx $end
+$var wire 32 ^ reg_file_tmp [31:0] $end
+$var parameter 4 _ idx $end
 $upscope $end
 $scope begin genblk1[6] $end
-$var wire 32 _ reg_file_tmp [31:0] $end
-$var parameter 4 ` idx $end
+$var wire 32 ` reg_file_tmp [31:0] $end
+$var parameter 4 a idx $end
 $upscope $end
 $scope begin genblk1[7] $end
-$var wire 32 a reg_file_tmp [31:0] $end
-$var parameter 4 b idx $end
+$var wire 32 b reg_file_tmp [31:0] $end
+$var parameter 4 c idx $end
 $upscope $end
 $scope begin genblk1[8] $end
-$var wire 32 c reg_file_tmp [31:0] $end
-$var parameter 5 d idx $end
+$var wire 32 d reg_file_tmp [31:0] $end
+$var parameter 5 e idx $end
 $upscope $end
 $scope begin genblk1[9] $end
-$var wire 32 e reg_file_tmp [31:0] $end
-$var parameter 5 f idx $end
+$var wire 32 f reg_file_tmp [31:0] $end
+$var parameter 5 g idx $end
 $upscope $end
 $scope begin genblk1[10] $end
-$var wire 32 g reg_file_tmp [31:0] $end
-$var parameter 5 h idx $end
+$var wire 32 h reg_file_tmp [31:0] $end
+$var parameter 5 i idx $end
 $upscope $end
 $scope begin genblk1[11] $end
-$var wire 32 i reg_file_tmp [31:0] $end
-$var parameter 5 j idx $end
+$var wire 32 j reg_file_tmp [31:0] $end
+$var parameter 5 k idx $end
 $upscope $end
 $scope begin genblk1[12] $end
-$var wire 32 k reg_file_tmp [31:0] $end
-$var parameter 5 l idx $end
+$var wire 32 l reg_file_tmp [31:0] $end
+$var parameter 5 m idx $end
 $upscope $end
 $scope begin genblk1[13] $end
-$var wire 32 m reg_file_tmp [31:0] $end
-$var parameter 5 n idx $end
+$var wire 32 n reg_file_tmp [31:0] $end
+$var parameter 5 o idx $end
 $upscope $end
 $scope begin genblk1[14] $end
-$var wire 32 o reg_file_tmp [31:0] $end
-$var parameter 5 p idx $end
+$var wire 32 p reg_file_tmp [31:0] $end
+$var parameter 5 q idx $end
 $upscope $end
 $scope begin genblk1[15] $end
-$var wire 32 q reg_file_tmp [31:0] $end
-$var parameter 5 r idx $end
+$var wire 32 r reg_file_tmp [31:0] $end
+$var parameter 5 s idx $end
 $upscope $end
 $scope begin genblk1[16] $end
-$var wire 32 s reg_file_tmp [31:0] $end
-$var parameter 6 t idx $end
+$var wire 32 t reg_file_tmp [31:0] $end
+$var parameter 6 u idx $end
 $upscope $end
 $scope begin genblk1[17] $end
-$var wire 32 u reg_file_tmp [31:0] $end
-$var parameter 6 v idx $end
+$var wire 32 v reg_file_tmp [31:0] $end
+$var parameter 6 w idx $end
 $upscope $end
 $scope begin genblk1[18] $end
-$var wire 32 w reg_file_tmp [31:0] $end
-$var parameter 6 x idx $end
+$var wire 32 x reg_file_tmp [31:0] $end
+$var parameter 6 y idx $end
 $upscope $end
 $scope begin genblk1[19] $end
-$var wire 32 y reg_file_tmp [31:0] $end
-$var parameter 6 z idx $end
+$var wire 32 z reg_file_tmp [31:0] $end
+$var parameter 6 { idx $end
 $upscope $end
 $scope begin genblk1[20] $end
-$var wire 32 { reg_file_tmp [31:0] $end
-$var parameter 6 | idx $end
+$var wire 32 | reg_file_tmp [31:0] $end
+$var parameter 6 } idx $end
 $upscope $end
 $scope begin genblk1[21] $end
-$var wire 32 } reg_file_tmp [31:0] $end
-$var parameter 6 ~ idx $end
+$var wire 32 ~ reg_file_tmp [31:0] $end
+$var parameter 6 !" idx $end
 $upscope $end
 $scope begin genblk1[22] $end
-$var wire 32 !" reg_file_tmp [31:0] $end
-$var parameter 6 "" idx $end
+$var wire 32 "" reg_file_tmp [31:0] $end
+$var parameter 6 #" idx $end
 $upscope $end
 $scope begin genblk1[23] $end
-$var wire 32 #" reg_file_tmp [31:0] $end
-$var parameter 6 $" idx $end
+$var wire 32 $" reg_file_tmp [31:0] $end
+$var parameter 6 %" idx $end
 $upscope $end
 $scope begin genblk1[24] $end
-$var wire 32 %" reg_file_tmp [31:0] $end
-$var parameter 6 &" idx $end
+$var wire 32 &" reg_file_tmp [31:0] $end
+$var parameter 6 '" idx $end
 $upscope $end
 $scope begin genblk1[25] $end
-$var wire 32 '" reg_file_tmp [31:0] $end
-$var parameter 6 (" idx $end
+$var wire 32 (" reg_file_tmp [31:0] $end
+$var parameter 6 )" idx $end
 $upscope $end
 $scope begin genblk1[26] $end
-$var wire 32 )" reg_file_tmp [31:0] $end
-$var parameter 6 *" idx $end
+$var wire 32 *" reg_file_tmp [31:0] $end
+$var parameter 6 +" idx $end
 $upscope $end
 $scope begin genblk1[27] $end
-$var wire 32 +" reg_file_tmp [31:0] $end
-$var parameter 6 ," idx $end
+$var wire 32 ," reg_file_tmp [31:0] $end
+$var parameter 6 -" idx $end
 $upscope $end
 $scope begin genblk1[28] $end
-$var wire 32 -" reg_file_tmp [31:0] $end
-$var parameter 6 ." idx $end
+$var wire 32 ." reg_file_tmp [31:0] $end
+$var parameter 6 /" idx $end
 $upscope $end
 $scope begin genblk1[29] $end
-$var wire 32 /" reg_file_tmp [31:0] $end
-$var parameter 6 0" idx $end
+$var wire 32 0" reg_file_tmp [31:0] $end
+$var parameter 6 1" idx $end
 $upscope $end
 $scope begin genblk1[30] $end
-$var wire 32 1" reg_file_tmp [31:0] $end
-$var parameter 6 2" idx $end
+$var wire 32 2" reg_file_tmp [31:0] $end
+$var parameter 6 3" idx $end
 $upscope $end
 $scope begin genblk1[31] $end
-$var wire 32 3" reg_file_tmp [31:0] $end
-$var parameter 6 4" idx $end
+$var wire 32 4" reg_file_tmp [31:0] $end
+$var parameter 6 5" idx $end
 $upscope $end
 $scope module u_alu $end
-$var wire 32 5" i_a [31:0] $end
+$var wire 32 6" i_a [31:0] $end
 $var wire 1 / i_arith_shift $end
-$var wire 32 6" i_b [31:0] $end
-$var wire 3 7" i_branch_op [2:0] $end
-$var wire 3 8" i_op [2:0] $end
+$var wire 32 7" i_b [31:0] $end
+$var wire 3 8" i_branch_op [2:0] $end
+$var wire 3 9" i_op [2:0] $end
 $var wire 1 2 i_sub $end
 $var reg 1 D o_will_branch $end
-$var reg 32 9" o_y [31:0] $end
+$var reg 32 :" o_y [31:0] $end
 $upscope $end
 $upscope $end
 $scope module u_mem $end
-$var wire 32 :" i_addr [31:0] $end
 $var wire 1 , i_clk $end
-$var wire 32 ;" i_data [31:0] $end
-$var wire 1 ' i_exec $end
 $var wire 1 - i_reset $end
-$var wire 3 <" i_sel [2:0] $end
-$var wire 1 % i_we $end
-$var wire 32 =" word_addr [31:0] $end
-$var parameter 32 >" S_IDLE $end
-$var parameter 32 ?" S_READ $end
-$var parameter 32 @" S_WRITE $end
-$var reg 1 $ o_busy $end
-$var reg 32 A" o_data [31:0] $end
-$var reg 1 " o_fin $end
-$var integer 32 B" r_state [31:0] $end
+$var wire 32 ;" i_wb_addr [31:0] $end
+$var wire 32 <" i_wb_data [31:0] $end
+$var wire 3 =" i_wb_sel [2:0] $end
+$var wire 1 & i_wb_stb $end
+$var wire 1 % i_wb_we $end
+$var wire 32 >" word_addr [31:0] $end
+$var parameter 32 ?" S_IDLE $end
+$var parameter 32 @" S_READ $end
+$var parameter 32 A" S_WRITE $end
+$var reg 1 $ o_wb_ack $end
+$var reg 32 B" o_wb_data [31:0] $end
+$var reg 1 " o_wb_stall $end
+$var integer 32 C" r_state [31:0] $end
 $scope begin test_mem[0] $end
-$var wire 32 C" tmp_mem_array [31:0] $end
-$var parameter 2 D" idx $end
+$var wire 32 D" tmp_mem_array [31:0] $end
+$var parameter 2 E" idx $end
 $upscope $end
 $scope begin test_mem[1] $end
-$var wire 32 E" tmp_mem_array [31:0] $end
-$var parameter 2 F" idx $end
+$var wire 32 F" tmp_mem_array [31:0] $end
+$var parameter 2 G" idx $end
 $upscope $end
 $scope begin test_mem[2] $end
-$var wire 32 G" tmp_mem_array [31:0] $end
-$var parameter 3 H" idx $end
+$var wire 32 H" tmp_mem_array [31:0] $end
+$var parameter 3 I" idx $end
 $upscope $end
 $scope begin test_mem[3] $end
-$var wire 32 I" tmp_mem_array [31:0] $end
-$var parameter 3 J" idx $end
+$var wire 32 J" tmp_mem_array [31:0] $end
+$var parameter 3 K" idx $end
 $upscope $end
 $scope begin test_mem[4] $end
-$var wire 32 K" tmp_mem_array [31:0] $end
-$var parameter 4 L" idx $end
+$var wire 32 L" tmp_mem_array [31:0] $end
+$var parameter 4 M" idx $end
 $upscope $end
 $scope begin test_mem[5] $end
-$var wire 32 M" tmp_mem_array [31:0] $end
-$var parameter 4 N" idx $end
+$var wire 32 N" tmp_mem_array [31:0] $end
+$var parameter 4 O" idx $end
 $upscope $end
 $scope begin test_mem[6] $end
-$var wire 32 O" tmp_mem_array [31:0] $end
-$var parameter 4 P" idx $end
+$var wire 32 P" tmp_mem_array [31:0] $end
+$var parameter 4 Q" idx $end
 $upscope $end
 $scope begin test_mem[7] $end
-$var wire 32 Q" tmp_mem_array [31:0] $end
-$var parameter 4 R" idx $end
+$var wire 32 R" tmp_mem_array [31:0] $end
+$var parameter 4 S" idx $end
 $upscope $end
 $scope begin test_mem[8] $end
-$var wire 32 S" tmp_mem_array [31:0] $end
-$var parameter 5 T" idx $end
+$var wire 32 T" tmp_mem_array [31:0] $end
+$var parameter 5 U" idx $end
 $upscope $end
 $scope begin test_mem[9] $end
-$var wire 32 U" tmp_mem_array [31:0] $end
-$var parameter 5 V" idx $end
+$var wire 32 V" tmp_mem_array [31:0] $end
+$var parameter 5 W" idx $end
 $upscope $end
 $scope begin test_mem[10] $end
-$var wire 32 W" tmp_mem_array [31:0] $end
-$var parameter 5 X" idx $end
+$var wire 32 X" tmp_mem_array [31:0] $end
+$var parameter 5 Y" idx $end
 $upscope $end
 $scope begin test_mem[11] $end
-$var wire 32 Y" tmp_mem_array [31:0] $end
-$var parameter 5 Z" idx $end
+$var wire 32 Z" tmp_mem_array [31:0] $end
+$var parameter 5 [" idx $end
 $upscope $end
 $scope begin test_mem[12] $end
-$var wire 32 [" tmp_mem_array [31:0] $end
-$var parameter 5 \" idx $end
+$var wire 32 \" tmp_mem_array [31:0] $end
+$var parameter 5 ]" idx $end
 $upscope $end
 $scope begin test_mem[13] $end
-$var wire 32 ]" tmp_mem_array [31:0] $end
-$var parameter 5 ^" idx $end
+$var wire 32 ^" tmp_mem_array [31:0] $end
+$var parameter 5 _" idx $end
 $upscope $end
 $scope begin test_mem[14] $end
-$var wire 32 _" tmp_mem_array [31:0] $end
-$var parameter 5 `" idx $end
+$var wire 32 `" tmp_mem_array [31:0] $end
+$var parameter 5 a" idx $end
 $upscope $end
 $scope begin test_mem[15] $end
-$var wire 32 a" tmp_mem_array [31:0] $end
-$var parameter 5 b" idx $end
+$var wire 32 b" tmp_mem_array [31:0] $end
+$var parameter 5 c" idx $end
 $upscope $end
 $scope begin test_mem[16] $end
-$var wire 32 c" tmp_mem_array [31:0] $end
-$var parameter 6 d" idx $end
+$var wire 32 d" tmp_mem_array [31:0] $end
+$var parameter 6 e" idx $end
 $upscope $end
 $scope begin test_mem[17] $end
-$var wire 32 e" tmp_mem_array [31:0] $end
-$var parameter 6 f" idx $end
+$var wire 32 f" tmp_mem_array [31:0] $end
+$var parameter 6 g" idx $end
 $upscope $end
 $scope begin test_mem[18] $end
-$var wire 32 g" tmp_mem_array [31:0] $end
-$var parameter 6 h" idx $end
+$var wire 32 h" tmp_mem_array [31:0] $end
+$var parameter 6 i" idx $end
 $upscope $end
 $scope begin test_mem[19] $end
-$var wire 32 i" tmp_mem_array [31:0] $end
-$var parameter 6 j" idx $end
+$var wire 32 j" tmp_mem_array [31:0] $end
+$var parameter 6 k" idx $end
 $upscope $end
 $scope begin test_mem[20] $end
-$var wire 32 k" tmp_mem_array [31:0] $end
-$var parameter 6 l" idx $end
+$var wire 32 l" tmp_mem_array [31:0] $end
+$var parameter 6 m" idx $end
 $upscope $end
 $scope begin test_mem[21] $end
-$var wire 32 m" tmp_mem_array [31:0] $end
-$var parameter 6 n" idx $end
+$var wire 32 n" tmp_mem_array [31:0] $end
+$var parameter 6 o" idx $end
 $upscope $end
 $scope begin test_mem[22] $end
-$var wire 32 o" tmp_mem_array [31:0] $end
-$var parameter 6 p" idx $end
+$var wire 32 p" tmp_mem_array [31:0] $end
+$var parameter 6 q" idx $end
 $upscope $end
 $scope begin test_mem[23] $end
-$var wire 32 q" tmp_mem_array [31:0] $end
-$var parameter 6 r" idx $end
+$var wire 32 r" tmp_mem_array [31:0] $end
+$var parameter 6 s" idx $end
 $upscope $end
 $scope begin test_mem[24] $end
-$var wire 32 s" tmp_mem_array [31:0] $end
-$var parameter 6 t" idx $end
+$var wire 32 t" tmp_mem_array [31:0] $end
+$var parameter 6 u" idx $end
 $upscope $end
 $scope begin test_mem[25] $end
-$var wire 32 u" tmp_mem_array [31:0] $end
-$var parameter 6 v" idx $end
+$var wire 32 v" tmp_mem_array [31:0] $end
+$var parameter 6 w" idx $end
 $upscope $end
 $scope begin test_mem[26] $end
-$var wire 32 w" tmp_mem_array [31:0] $end
-$var parameter 6 x" idx $end
+$var wire 32 x" tmp_mem_array [31:0] $end
+$var parameter 6 y" idx $end
 $upscope $end
 $scope begin test_mem[27] $end
-$var wire 32 y" tmp_mem_array [31:0] $end
-$var parameter 6 z" idx $end
+$var wire 32 z" tmp_mem_array [31:0] $end
+$var parameter 6 {" idx $end
 $upscope $end
 $scope begin test_mem[28] $end
-$var wire 32 {" tmp_mem_array [31:0] $end
-$var parameter 6 |" idx $end
+$var wire 32 |" tmp_mem_array [31:0] $end
+$var parameter 6 }" idx $end
 $upscope $end
 $scope begin test_mem[29] $end
-$var wire 32 }" tmp_mem_array [31:0] $end
-$var parameter 6 ~" idx $end
+$var wire 32 ~" tmp_mem_array [31:0] $end
+$var parameter 6 !# idx $end
 $upscope $end
 $scope begin test_mem[30] $end
-$var wire 32 !# tmp_mem_array [31:0] $end
-$var parameter 6 "# idx $end
+$var wire 32 "# tmp_mem_array [31:0] $end
+$var parameter 6 ## idx $end
 $upscope $end
 $scope begin test_mem[31] $end
-$var wire 32 ## tmp_mem_array [31:0] $end
-$var parameter 6 $# idx $end
+$var wire 32 $# tmp_mem_array [31:0] $end
+$var parameter 6 %# idx $end
 $upscope $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b11111 $#
-b11110 "#
-b11101 ~"
-b11100 |"
-b11011 z"
-b11010 x"
-b11001 v"
-b11000 t"
-b10111 r"
-b10110 p"
-b10101 n"
-b10100 l"
-b10011 j"
-b10010 h"
-b10001 f"
-b10000 d"
-b1111 b"
-b1110 `"
-b1101 ^"
-b1100 \"
-b1011 Z"
-b1010 X"
-b1001 V"
-b1000 T"
-b111 R"
-b110 P"
-b101 N"
-b100 L"
-b11 J"
-b10 H"
-b1 F"
-b0 D"
-b11 @"
-b10 ?"
-b1 >"
-b11111 4"
-b11110 2"
-b11101 0"
-b11100 ."
-b11011 ,"
-b11010 *"
-b11001 ("
-b11000 &"
-b10111 $"
-b10110 ""
-b10101 ~
-b10100 |
-b10011 z
-b10010 x
-b10001 v
-b10000 t
-b1111 r
-b1110 p
-b1101 n
-b1100 l
-b1011 j
-b1010 h
-b1001 f
-b1000 d
-b111 b
-b110 `
-b101 ^
-b100 \
-b11 Z
-b10 X
-b1 V
-b0 T
+b11111 %#
+b11110 ##
+b11101 !#
+b11100 }"
+b11011 {"
+b11010 y"
+b11001 w"
+b11000 u"
+b10111 s"
+b10110 q"
+b10101 o"
+b10100 m"
+b10011 k"
+b10010 i"
+b10001 g"
+b10000 e"
+b1111 c"
+b1110 a"
+b1101 _"
+b1100 ]"
+b1011 ["
+b1010 Y"
+b1001 W"
+b1000 U"
+b111 S"
+b110 Q"
+b101 O"
+b100 M"
+b11 K"
+b10 I"
+b1 G"
+b0 E"
+b11 A"
+b10 @"
+b1 ?"
+b11111 5"
+b11110 3"
+b11101 1"
+b11100 /"
+b11011 -"
+b11010 +"
+b11001 )"
+b11000 '"
+b10111 %"
+b10110 #"
+b10101 !"
+b10100 }
+b10011 {
+b10010 y
+b10001 w
+b10000 u
+b1111 s
+b1110 q
+b1101 o
+b1100 m
+b1011 k
+b1010 i
+b1001 g
+b1000 e
+b111 c
+b110 a
+b101 _
+b100 ]
+b11 [
+b10 Y
+b1 W
+b0 U
 b1 L
 b110 K
 b0 J
@@ -433,83 +434,84 @@ b1010 +
 $end
 #0
 $dumpvars
-bx ##
-bx !#
-bx }"
-bx {"
-bx y"
-bx w"
-bx u"
-bx s"
-bx q"
-bx o"
-bx m"
-bx k"
-bx i"
-bx g"
-bx e"
-bx c"
-bx a"
-bx _"
-bx ]"
-bx ["
-bx Y"
-bx W"
-bx U"
-bx S"
-bx Q"
-bx O"
-bx M"
-b1000000010001010000000010110011 K"
-b1100010000010100110011 I"
-b11100000000000001000010011 G"
-b11111111100000000000000110010011 E"
-b11010100000000000100010011 C"
-b1 B"
-bx A"
-b0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ="
+bx $#
+bx "#
+bx ~"
+bx |"
+bx z"
+bx x"
+bx v"
+bx t"
+bx r"
+bx p"
+bx n"
+bx l"
+bx j"
+bx h"
+bx f"
+bx d"
+bx b"
+bx `"
+bx ^"
+bx \"
+bx Z"
+bx X"
+bx V"
+bx T"
+bx R"
+bx P"
+bx N"
+b1000000010001010000000010110011 L"
+b1100010000010100110011 J"
+b11100000000000001000010011 H"
+b11111111100000000000000110010011 F"
+b11010100000000000100010011 D"
+b1 C"
+bx B"
+b0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx >"
+bx ="
 bx <"
 bx ;"
-bx :"
+b0 :"
 b0 9"
 b0 8"
 b0 7"
 b0 6"
-b0 5"
-b0 3"
-b0 1"
-b0 /"
-b0 -"
-b0 +"
-b0 )"
-b0 '"
-b0 %"
-b0 #"
-b0 !"
-b0 }
-b0 {
-b0 y
-b0 w
-b0 u
-b0 s
-b0 q
-b0 o
-b0 m
-b0 k
-b0 i
-b0 g
-b0 e
-b0 c
-b0 a
-b0 _
-b0 ]
-b0 [
-b0 Y
-b1111111111111111111111111110000 W
-b0 U
+b0 4"
+b0 2"
+b0 0"
+b0 ."
+b0 ,"
+b0 *"
+b0 ("
+b0 &"
+b0 $"
+b0 ""
+b0 ~
+b0 |
+b0 z
+b0 x
+b0 v
+b0 t
+b0 r
+b0 p
+b0 n
+b0 l
+b0 j
+b0 h
+b0 f
+b0 d
+b0 b
+b0 `
+b0 ^
+b0 \
+b0 Z
+b1111111111111111111111111110000 X
+b0 V
+b0 T
 b0 S
 b0 R
-b0 Q
+xQ
 bx P
 bx O
 bx N
@@ -543,8 +545,8 @@ b0 .
 x*
 bx )
 bx (
-x'
-bx &
+bx '
+x&
 x%
 x$
 bx #
@@ -552,62 +554,65 @@ x"
 1!
 $end
 #5
-b0 ="
-0$
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
+b0 >"
 0"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
+0$
+0Q
 b0 )
 b0 N
-b0 :"
+b0 ;"
 b0 (
 b0 O
-b0 ;"
-0'
+b0 <"
+0&
 0*
 0%
-b10 &
+b10 '
 b10 P
-b10 <"
+b10 ="
 1,
 #10
 0-
 0,
 #15
-b1 R
+b1 S
+1Q
 1,
 #20
 0,
 #25
-b10 R
-1'
+b10 S
+1&
 1,
 #30
 0,
 #35
-b10 B"
-1$
+0&
+b10 C"
+1"
 1,
 #40
 0,
 #45
-b1 B"
-1"
+b1 C"
+1$
 b11010100000000000100010011 #
 b11010100000000000100010011 ?
-b11010100000000000100010011 A"
+b11010100000000000100010011 B"
 1,
 #50
 0,
 #55
 0D
 b110101 C
-b110101 9"
+b110101 :"
 b100000110100 ;
 b100010 A
 b110101 E
-b110101 6"
+b110101 7"
 13
 b10101 6
 b10 8
@@ -615,287 +620,295 @@ b100010 5
 b11010100000000000000000000 4
 1=
 b110101 :
-b11 R
+b11 S
 b11010100000000000100010011 M
-0'
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
-0$
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
 0"
+0$
 1,
 #60
 0,
 #65
-b110 R
-b110101 W
+b110 S
+b110101 X
 1,
 #70
 0,
 #75
-b0 R
+b0 S
+0Q
 1*
-b100 Q
+b100 R
 1,
 #80
 0,
 #85
-b1 R
+b1 S
+1Q
 0*
 1,
 #90
 0,
 #95
-b1 ="
-b10 R
-1'
+b1 >"
+b10 S
+1&
 b100 )
 b100 N
-b100 :"
+b100 ;"
 1,
 #100
 0,
 #105
-b10 B"
-1$
+b10 C"
+1"
+0&
 1,
 #110
 0,
 #115
-b1 B"
-1"
+b1 C"
+1$
 b11111111100000000000000110010011 #
 b11111111100000000000000110010011 ?
-b11111111100000000000000110010011 A"
+b11111111100000000000000110010011 B"
 1,
 #120
 0,
 #125
 b11111111111111111111111111111000 C
-b11111111111111111111111111111000 9"
+b11111111111111111111111111111000 :"
 b11111111111100000000011111111000 ;
 b11111111111111111111111111100010 A
 b11000 6
 b11 8
 b11111111111111111111111111100011 5
 b11111111111111111111111111111000 E
-b11111111111111111111111111111000 6"
+b11111111111111111111111111111000 7"
 b11111111100000000000000000000000 4
-b0 ="
+b0 >"
 b11111111111111111111111111111000 :
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
-0$
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
 0"
-b11 R
+0$
+b11 S
 b11111111100000000000000110010011 M
-0'
 b0 )
 b0 N
-b0 :"
+b0 ;"
 1,
 #130
 0,
 #135
-b110 R
-b11111111111111111111111111111000 Y
+b110 S
+b11111111111111111111111111111000 Z
 1,
 #140
 0,
 #145
-b0 R
+b0 S
+0Q
 1*
-b1000 Q
+b1000 R
 1,
 #150
 0,
 #155
-b1 R
+b1 S
+1Q
 0*
 1,
 #160
 0,
 #165
-b10 ="
-b10 R
-1'
+b10 >"
+b10 S
+1&
 b1000 )
 b1000 N
-b1000 :"
+b1000 ;"
 1,
 #170
 0,
 #175
-b10 B"
-1$
+0&
+b10 C"
+1"
 1,
 #180
 0,
 #185
-b1 B"
-1"
+b1 C"
+1$
 b11100000000000001000010011 #
 b11100000000000001000010011 ?
-b11100000000000001000010011 A"
+b11100000000000001000010011 B"
 1,
 #190
 0,
 #195
 b111000 C
-b111000 9"
+b111000 :"
 b111000 ;
 b100100 A
 b100 8
 b100100 5
 b111000 E
-b111000 6"
+b111000 7"
 b11100000000000000000000000 4
-b0 ="
+b0 >"
 b111000 :
-b11 R
+b11 S
 b11100000000000001000010011 M
-0'
 b0 )
 b0 N
-b0 :"
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
-0$
+b0 ;"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
 0"
+0$
 1,
 #200
 0,
 #205
-b110 R
-b111000 [
+b110 S
+b111000 \
 1,
 #210
 0,
 #215
-b0 R
+b0 S
+0Q
 1*
-b1100 Q
+b1100 R
 1,
 #220
 0,
 #225
-b1 R
+b1 S
+1Q
 0*
 1,
 #230
 0,
 #235
-b11 ="
-b10 R
-1'
+b11 >"
+b10 S
+1&
 b1100 )
 b1100 N
-b1100 :"
+b1100 ;"
 1,
 #240
 0,
 #245
-b10 B"
-1$
+b10 C"
+1"
+0&
 1,
 #250
 0,
 #255
-b1 B"
-1"
+b1 C"
+1$
 b1100010000010100110011 #
 b1100010000010100110011 ?
-b1100010000010100110011 A"
+b1100010000010100110011 B"
 1,
 #260
 0,
 #265
 b101101 C
-b101101 9"
+b101101 :"
 b10000100000000010 ;
 b1010 A
 b110101 .
-b110101 5"
+b110101 6"
 b10 7
 b11 6
 b1010 8
 b1010 5
 b11111111111111111111111111111000 E
-b11111111111111111111111111111000 6"
+b11111111111111111111111111111000 7"
 b1100010000000000000000 4
 0=
 1<
-b0 ="
+b0 >"
 b11 :
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
-0$
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
 0"
-b11 R
+0$
+b11 S
 b1100010000010100110011 M
-0'
 b0 )
 b0 N
-b0 :"
+b0 ;"
 1,
 #270
 0,
 #275
-b110 R
-b101101 g
+b110 S
+b101101 h
 1,
 #280
 0,
 #285
-b0 R
+b0 S
+0Q
 1*
-b10000 Q
+b10000 R
 1,
 #290
 0,
 #295
-b1 R
+b1 S
+1Q
 0*
 1,
 #300
 0,
 #305
-b100 ="
-b10 R
-1'
+b100 >"
+b10 S
+1&
 b10000 )
 b10000 N
-b10000 :"
+b10000 ;"
 1,
 #310
 0,
 #315
-b10 B"
-1$
+0&
+b10 C"
+1"
 1,
 #320
 0,
 #325
-b1 B"
-1"
+b1 C"
+1$
 b1000000010001010000000010110011 #
 b1000000010001010000000010110011 ?
-b1000000010001010000000010110011 A"
+b1000000010001010000000010110011 B"
 1,
 #330
 0,
 #335
 b111000 E
-b111000 6"
+b111000 7"
 b1010000010000000100 ;
 b110000000000 A
 b11111111111111111111111111110101 C
-b11111111111111111111111111110101 9"
+b11111111111111111111111111110101 :"
 b101101 .
-b101101 5"
+b101101 6"
 b1010 7
 b100 6
 b1 8
@@ -904,63 +917,65 @@ b1000000010001010000000000000000 4
 1/
 12
 1B
-b0 ="
+b0 >"
 b10000000100 :
-b11 R
+b11 S
 b1000000010001010000000010110011 M
-0'
 b0 )
 b0 N
-b0 :"
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
-0$
+b0 ;"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
 0"
+0$
 1,
 #340
 0,
 #345
-b110 R
-b11111111111111111111111111110101 U
+b110 S
+b11111111111111111111111111110101 V
 1,
 #350
 0,
 #355
-b0 R
+b0 S
+0Q
 1*
-b10100 Q
+b10100 R
 1,
 #360
 0,
 #365
-b1 R
+b1 S
+1Q
 0*
 1,
 #370
 0,
 #375
-b101 ="
-b10 R
-1'
+b101 >"
+b10 S
+1&
 b10100 )
 b10100 N
-b10100 :"
+b10100 ;"
 1,
 #380
 0,
 #385
-b10 B"
-1$
+b10 C"
+1"
+0&
 1,
 #390
 0,
 #395
-b1 B"
-1"
+b1 C"
+1$
 bx #
 bx ?
-bx A"
+bx B"
 1,
 #400
 0,
@@ -968,42 +983,41 @@ bx A"
 bx0 ;
 bx0 A
 bx E
-bx 6"
+bx 7"
 x3
 bx .
-bx 5"
+bx 6"
 b0xxxxx 7
 b0xxxxx 6
 b0xxxxx 8
 bx 5
 bx000000000000 4
 b0 C
-b0 9"
+b0 :"
 x=
 x<
 x/
 x2
 xB
-b0 ="
+b0 >"
 bx :
 bx >
 bx 0
-bx 7"
+bx 8"
 bx @
 bx 1
-bx 8"
+bx 9"
 bx 9
-b11110000111100001111000011110000 #
-b11110000111100001111000011110000 ?
-b11110000111100001111000011110000 A"
-0$
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 B"
 0"
-b11 R
+0$
+b11 S
 bx M
-0'
 b0 )
 b0 N
-b0 :"
+b0 ;"
 1,
 #410
 0,

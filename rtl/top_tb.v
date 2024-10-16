@@ -4,45 +4,45 @@ module tb_top;
 
   reg clk = 0;
   reg reset = 1;
-  wire mem_i_exec;
-  wire [31:0] mem_i_data;
-  wire [31:0] mem_i_addr;
-  wire mem_i_we;
-  wire [31:0] mem_o_data;
-  wire mem_o_fin;
-  wire [2:0] mem_i_sel;
-  wire mem_o_busy;
+  wire mem_i_wb_stb;
+  wire [31:0] mem_i_wb_data;
+  wire [31:0] mem_i_wb_addr;
+  wire mem_i_wb_we;
+  wire [31:0] mem_o_wb_data;
+  wire mem_o_wb_ack;
+  wire [2:0] mem_i_wb_sel;
+  wire mem_o_wb_stall;
 
   mem u_mem (
       .i_clk  (clk),
       .i_reset(reset),
-      .i_exec (mem_i_exec),
-      .i_data (mem_i_data),
-      .i_addr (mem_i_addr),
-      .i_sel  (mem_i_sel),
-      .i_we   (mem_i_we),
-      .o_data (mem_o_data),
-      .o_fin  (mem_o_fin),
-      .o_busy (mem_o_busy)
+      .i_wb_stb (mem_i_wb_stb),
+      .i_wb_data (mem_i_wb_data),
+      .i_wb_addr (mem_i_wb_addr),
+      .i_wb_sel  (mem_i_wb_sel),
+      .i_wb_we   (mem_i_wb_we),
+      .o_wb_data (mem_o_wb_data),
+      .o_wb_ack  (mem_o_wb_ack),
+      .o_wb_stall (mem_o_wb_stall)
   );
 
-  wire cpu_o_fin;
-  wire cpu_i_exec;
-  assign cpu_i_exec = 1;
+  wire cpu_o_wb_ack;
+  wire cpu_i_wb_stb;
+  assign cpu_i_wb_stb = 1;
 
   cpu u_cpu (
       .i_clk     (clk),
       .i_reset   (reset),
-      .i_exec    (cpu_i_exec),
-      .i_fin     (mem_o_fin),
-      .i_busy    (mem_o_busy),
-      .i_data    (mem_o_data),
-      .o_data    (mem_i_data),
-      .o_addr    (mem_i_addr),
-      .o_we      (mem_i_we),
-      .o_mem_exec(mem_i_exec),
-      .o_sel     (mem_i_sel),
-      .o_fin     (cpu_o_fin)
+      .i_wb_stb  (cpu_i_wb_stb),
+      .i_wb_ack  (mem_o_wb_ack),
+      .i_wb_stall(mem_o_wb_stall),
+      .i_wb_data (mem_o_wb_data),
+      .o_wb_data (mem_i_wb_data),
+      .o_wb_addr (mem_i_wb_addr),
+      .o_wb_we   (mem_i_wb_we),
+      .o_wb_stb  (mem_i_wb_stb),
+      .o_wb_sel  (mem_i_wb_sel),
+      .o_wb_ack  (cpu_o_wb_ack)
   );
 
 
