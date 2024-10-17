@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/fpga_playground.dir/cpp/main.cpp.o -o fpga_playground 

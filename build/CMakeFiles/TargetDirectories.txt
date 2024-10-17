@@ -1,3 +1,0 @@
-/home/abrka/projects/fpga-playground/build/CMakeFiles/fpga_playground.dir
-/home/abrka/projects/fpga-playground/build/CMakeFiles/edit_cache.dir
-/home/abrka/projects/fpga-playground/build/CMakeFiles/rebuild_cache.dir

@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/abrka/projects/fpga-playground/build",
-  "command": "/usr/bin/c++   -g -o CMakeFiles/fpga_playground.dir/cpp/main.cpp.o -c /home/abrka/projects/fpga-playground/cpp/main.cpp",
-  "file": "/home/abrka/projects/fpga-playground/cpp/main.cpp"
-}
-]
