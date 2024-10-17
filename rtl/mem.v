@@ -12,17 +12,20 @@ module mem (
 );
 
   reg [31:0] mem_array[2**8];
+  initial $readmemh("example_program.txt", mem_array);  //Assuming name of txt is data.txt
 
   generate
-    genvar idx;
-    for (idx = 0; idx < 32; idx = idx + 1) begin : test_mem
-      wire [31:0] tmp_mem_array;
-      assign tmp_mem_array = mem_array[idx];
+    genvar idx1;
+    for (idx1 = 0; idx1 < 32; idx1 = idx1 + 1) begin: test_mem
+      genvar idx2;
+      for (idx2 = 0; idx2 < 24+1 ; idx2 = idx2 + 8 ) begin
+        wire [7:0] tmp_byte;
+        assign tmp_byte = mem_array[idx1][idx2+7:idx2];
+      end     
     end
   endgenerate
 
-  initial $readmemh("example_program.txt", mem_array);  //Assuming name of txt is data.txt
-
+  
   parameter S_IDLE = 1;
   parameter S_READ = 2;
   parameter S_WRITE = 3;
@@ -70,9 +73,9 @@ module mem (
       end else if (local_sel == 'b001) begin
         case (local_byte_offset)
           2'b00: mem_array[local_word_addr][15:0] <= local_data[15:0];
-          2'b01: mem_array[local_word_addr][31:16] <= local_data[15:0];
-          2'b10: mem_array[local_word_addr+1][15:0] <= local_data[15:0];
-          2'b11: mem_array[local_word_addr+1][31:16] <= local_data[15:0];
+          2'b01: mem_array[local_word_addr][23:8] <= local_data[15:0];
+          2'b10: mem_array[local_word_addr][31:16] <= local_data[15:0];
+          2'b11: {mem_array[local_word_addr+1][7:0],mem_array[local_word_addr][31:24]} <= local_data[15:0];
         endcase
       end else if (local_sel == 'b010) begin
         mem_array[local_word_addr] <= local_data;
@@ -116,9 +119,9 @@ module mem (
         end else if (local_sel == 'b001) begin
           case (local_byte_offset)
             2'b00: o_wb_data = {{16{tmp0[31]}}, tmp0[15:0]};
-            2'b01: o_wb_data = {{16{tmp0[31]}}, tmp0[31:16]};
-            2'b10: o_wb_data = {{16{tmp1[31]}}, tmp1[15:0]};
-            2'b11: o_wb_data = {{16{tmp1[31]}}, tmp1[31:16]};
+            2'b01: o_wb_data = {{16{tmp0[31]}}, tmp0[23:8]};
+            2'b10: o_wb_data = {{16{tmp0[31]}}, tmp0[31:16]};
+            2'b11: o_wb_data = {{16{tmp1[31]}}, tmp1[7:0], tmp0[31:24]};
           endcase
         end else if (local_sel == 'b010) begin
           o_wb_data = mem_array[local_word_addr];
@@ -132,9 +135,9 @@ module mem (
         end else if (local_sel == 'b101) begin
           case (local_byte_offset)
             2'b00: o_wb_data = {{16{1'b0}}, tmp0[15:0]};
-            2'b01: o_wb_data = {{16{1'b0}}, tmp0[31:16]};
-            2'b10: o_wb_data = {{16{1'b0}}, tmp1[15:0]};
-            2'b11: o_wb_data = {{16{1'b0}}, tmp1[31:16]};
+            2'b01: o_wb_data = {{16{1'b0}}, tmp0[23:8]};
+            2'b10: o_wb_data = {{16{1'b0}}, tmp0[31:16]};
+            2'b11: o_wb_data = {{16{1'b0}}, tmp1[7:0], tmp0[31:24]};
           endcase
         end else begin
           $display("ERROR IN MEM, INVALID SEL");

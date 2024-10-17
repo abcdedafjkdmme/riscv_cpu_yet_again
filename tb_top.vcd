@@ -1,5 +1,5 @@
 $date
-	Wed Oct 16 19:44:36 2024
+	Thu Oct 17 06:31:04 2024
 $end
 $version
 	Icarus Verilog
@@ -232,170 +232,778 @@ $var reg 32 J" o_wb_data [31:0] $end
 $var reg 1 " o_wb_stall $end
 $var integer 32 K" r_state [31:0] $end
 $scope begin test_mem[0] $end
-$var wire 32 L" tmp_mem_array [31:0] $end
-$var parameter 2 M" idx $end
+$var parameter 2 L" idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 M" tmp_byte [7:0] $end
+$var parameter 2 N" idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 O" tmp_byte [7:0] $end
+$var parameter 5 P" idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 Q" tmp_byte [7:0] $end
+$var parameter 6 R" idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 S" tmp_byte [7:0] $end
+$var parameter 6 T" idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[1] $end
-$var wire 32 N" tmp_mem_array [31:0] $end
-$var parameter 2 O" idx $end
+$var parameter 2 U" idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 V" tmp_byte [7:0] $end
+$var parameter 2 W" idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 X" tmp_byte [7:0] $end
+$var parameter 5 Y" idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 Z" tmp_byte [7:0] $end
+$var parameter 6 [" idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 \" tmp_byte [7:0] $end
+$var parameter 6 ]" idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[2] $end
-$var wire 32 P" tmp_mem_array [31:0] $end
-$var parameter 3 Q" idx $end
+$var parameter 3 ^" idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 _" tmp_byte [7:0] $end
+$var parameter 2 `" idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 a" tmp_byte [7:0] $end
+$var parameter 5 b" idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 c" tmp_byte [7:0] $end
+$var parameter 6 d" idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 e" tmp_byte [7:0] $end
+$var parameter 6 f" idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[3] $end
-$var wire 32 R" tmp_mem_array [31:0] $end
-$var parameter 3 S" idx $end
+$var parameter 3 g" idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 h" tmp_byte [7:0] $end
+$var parameter 2 i" idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 j" tmp_byte [7:0] $end
+$var parameter 5 k" idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 l" tmp_byte [7:0] $end
+$var parameter 6 m" idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 n" tmp_byte [7:0] $end
+$var parameter 6 o" idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[4] $end
-$var wire 32 T" tmp_mem_array [31:0] $end
-$var parameter 4 U" idx $end
+$var parameter 4 p" idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 q" tmp_byte [7:0] $end
+$var parameter 2 r" idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 s" tmp_byte [7:0] $end
+$var parameter 5 t" idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 u" tmp_byte [7:0] $end
+$var parameter 6 v" idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 w" tmp_byte [7:0] $end
+$var parameter 6 x" idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[5] $end
-$var wire 32 V" tmp_mem_array [31:0] $end
-$var parameter 4 W" idx $end
+$var parameter 4 y" idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 z" tmp_byte [7:0] $end
+$var parameter 2 {" idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 |" tmp_byte [7:0] $end
+$var parameter 5 }" idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 ~" tmp_byte [7:0] $end
+$var parameter 6 !# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 "# tmp_byte [7:0] $end
+$var parameter 6 ## idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[6] $end
-$var wire 32 X" tmp_mem_array [31:0] $end
-$var parameter 4 Y" idx $end
+$var parameter 4 $# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 %# tmp_byte [7:0] $end
+$var parameter 2 &# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 '# tmp_byte [7:0] $end
+$var parameter 5 (# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 )# tmp_byte [7:0] $end
+$var parameter 6 *# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 +# tmp_byte [7:0] $end
+$var parameter 6 ,# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[7] $end
-$var wire 32 Z" tmp_mem_array [31:0] $end
-$var parameter 4 [" idx $end
+$var parameter 4 -# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 .# tmp_byte [7:0] $end
+$var parameter 2 /# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 0# tmp_byte [7:0] $end
+$var parameter 5 1# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 2# tmp_byte [7:0] $end
+$var parameter 6 3# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 4# tmp_byte [7:0] $end
+$var parameter 6 5# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[8] $end
-$var wire 32 \" tmp_mem_array [31:0] $end
-$var parameter 5 ]" idx $end
+$var parameter 5 6# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 7# tmp_byte [7:0] $end
+$var parameter 2 8# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 9# tmp_byte [7:0] $end
+$var parameter 5 :# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 ;# tmp_byte [7:0] $end
+$var parameter 6 <# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 =# tmp_byte [7:0] $end
+$var parameter 6 ># idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[9] $end
-$var wire 32 ^" tmp_mem_array [31:0] $end
-$var parameter 5 _" idx $end
+$var parameter 5 ?# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 @# tmp_byte [7:0] $end
+$var parameter 2 A# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 B# tmp_byte [7:0] $end
+$var parameter 5 C# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 D# tmp_byte [7:0] $end
+$var parameter 6 E# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 F# tmp_byte [7:0] $end
+$var parameter 6 G# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[10] $end
-$var wire 32 `" tmp_mem_array [31:0] $end
-$var parameter 5 a" idx $end
+$var parameter 5 H# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 I# tmp_byte [7:0] $end
+$var parameter 2 J# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 K# tmp_byte [7:0] $end
+$var parameter 5 L# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 M# tmp_byte [7:0] $end
+$var parameter 6 N# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 O# tmp_byte [7:0] $end
+$var parameter 6 P# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[11] $end
-$var wire 32 b" tmp_mem_array [31:0] $end
-$var parameter 5 c" idx $end
+$var parameter 5 Q# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 R# tmp_byte [7:0] $end
+$var parameter 2 S# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 T# tmp_byte [7:0] $end
+$var parameter 5 U# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 V# tmp_byte [7:0] $end
+$var parameter 6 W# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 X# tmp_byte [7:0] $end
+$var parameter 6 Y# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[12] $end
-$var wire 32 d" tmp_mem_array [31:0] $end
-$var parameter 5 e" idx $end
+$var parameter 5 Z# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 [# tmp_byte [7:0] $end
+$var parameter 2 \# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 ]# tmp_byte [7:0] $end
+$var parameter 5 ^# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 _# tmp_byte [7:0] $end
+$var parameter 6 `# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 a# tmp_byte [7:0] $end
+$var parameter 6 b# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[13] $end
-$var wire 32 f" tmp_mem_array [31:0] $end
-$var parameter 5 g" idx $end
+$var parameter 5 c# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 d# tmp_byte [7:0] $end
+$var parameter 2 e# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 f# tmp_byte [7:0] $end
+$var parameter 5 g# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 h# tmp_byte [7:0] $end
+$var parameter 6 i# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 j# tmp_byte [7:0] $end
+$var parameter 6 k# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[14] $end
-$var wire 32 h" tmp_mem_array [31:0] $end
-$var parameter 5 i" idx $end
+$var parameter 5 l# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 m# tmp_byte [7:0] $end
+$var parameter 2 n# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 o# tmp_byte [7:0] $end
+$var parameter 5 p# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 q# tmp_byte [7:0] $end
+$var parameter 6 r# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 s# tmp_byte [7:0] $end
+$var parameter 6 t# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[15] $end
-$var wire 32 j" tmp_mem_array [31:0] $end
-$var parameter 5 k" idx $end
+$var parameter 5 u# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 v# tmp_byte [7:0] $end
+$var parameter 2 w# idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 x# tmp_byte [7:0] $end
+$var parameter 5 y# idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 z# tmp_byte [7:0] $end
+$var parameter 6 {# idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 |# tmp_byte [7:0] $end
+$var parameter 6 }# idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[16] $end
-$var wire 32 l" tmp_mem_array [31:0] $end
-$var parameter 6 m" idx $end
+$var parameter 6 ~# idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 !$ tmp_byte [7:0] $end
+$var parameter 2 "$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 #$ tmp_byte [7:0] $end
+$var parameter 5 $$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 %$ tmp_byte [7:0] $end
+$var parameter 6 &$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 '$ tmp_byte [7:0] $end
+$var parameter 6 ($ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[17] $end
-$var wire 32 n" tmp_mem_array [31:0] $end
-$var parameter 6 o" idx $end
+$var parameter 6 )$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 *$ tmp_byte [7:0] $end
+$var parameter 2 +$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 ,$ tmp_byte [7:0] $end
+$var parameter 5 -$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 .$ tmp_byte [7:0] $end
+$var parameter 6 /$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 0$ tmp_byte [7:0] $end
+$var parameter 6 1$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[18] $end
-$var wire 32 p" tmp_mem_array [31:0] $end
-$var parameter 6 q" idx $end
+$var parameter 6 2$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 3$ tmp_byte [7:0] $end
+$var parameter 2 4$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 5$ tmp_byte [7:0] $end
+$var parameter 5 6$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 7$ tmp_byte [7:0] $end
+$var parameter 6 8$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 9$ tmp_byte [7:0] $end
+$var parameter 6 :$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[19] $end
-$var wire 32 r" tmp_mem_array [31:0] $end
-$var parameter 6 s" idx $end
+$var parameter 6 ;$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 <$ tmp_byte [7:0] $end
+$var parameter 2 =$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 >$ tmp_byte [7:0] $end
+$var parameter 5 ?$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 @$ tmp_byte [7:0] $end
+$var parameter 6 A$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 B$ tmp_byte [7:0] $end
+$var parameter 6 C$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[20] $end
-$var wire 32 t" tmp_mem_array [31:0] $end
-$var parameter 6 u" idx $end
+$var parameter 6 D$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 E$ tmp_byte [7:0] $end
+$var parameter 2 F$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 G$ tmp_byte [7:0] $end
+$var parameter 5 H$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 I$ tmp_byte [7:0] $end
+$var parameter 6 J$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 K$ tmp_byte [7:0] $end
+$var parameter 6 L$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[21] $end
-$var wire 32 v" tmp_mem_array [31:0] $end
-$var parameter 6 w" idx $end
+$var parameter 6 M$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 N$ tmp_byte [7:0] $end
+$var parameter 2 O$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 P$ tmp_byte [7:0] $end
+$var parameter 5 Q$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 R$ tmp_byte [7:0] $end
+$var parameter 6 S$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 T$ tmp_byte [7:0] $end
+$var parameter 6 U$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[22] $end
-$var wire 32 x" tmp_mem_array [31:0] $end
-$var parameter 6 y" idx $end
+$var parameter 6 V$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 W$ tmp_byte [7:0] $end
+$var parameter 2 X$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 Y$ tmp_byte [7:0] $end
+$var parameter 5 Z$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 [$ tmp_byte [7:0] $end
+$var parameter 6 \$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 ]$ tmp_byte [7:0] $end
+$var parameter 6 ^$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[23] $end
-$var wire 32 z" tmp_mem_array [31:0] $end
-$var parameter 6 {" idx $end
+$var parameter 6 _$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 `$ tmp_byte [7:0] $end
+$var parameter 2 a$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 b$ tmp_byte [7:0] $end
+$var parameter 5 c$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 d$ tmp_byte [7:0] $end
+$var parameter 6 e$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 f$ tmp_byte [7:0] $end
+$var parameter 6 g$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[24] $end
-$var wire 32 |" tmp_mem_array [31:0] $end
-$var parameter 6 }" idx $end
+$var parameter 6 h$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 i$ tmp_byte [7:0] $end
+$var parameter 2 j$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 k$ tmp_byte [7:0] $end
+$var parameter 5 l$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 m$ tmp_byte [7:0] $end
+$var parameter 6 n$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 o$ tmp_byte [7:0] $end
+$var parameter 6 p$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[25] $end
-$var wire 32 ~" tmp_mem_array [31:0] $end
-$var parameter 6 !# idx $end
+$var parameter 6 q$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 r$ tmp_byte [7:0] $end
+$var parameter 2 s$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 t$ tmp_byte [7:0] $end
+$var parameter 5 u$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 v$ tmp_byte [7:0] $end
+$var parameter 6 w$ idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 x$ tmp_byte [7:0] $end
+$var parameter 6 y$ idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[26] $end
-$var wire 32 "# tmp_mem_array [31:0] $end
-$var parameter 6 ## idx $end
+$var parameter 6 z$ idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 {$ tmp_byte [7:0] $end
+$var parameter 2 |$ idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 }$ tmp_byte [7:0] $end
+$var parameter 5 ~$ idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 !% tmp_byte [7:0] $end
+$var parameter 6 "% idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 #% tmp_byte [7:0] $end
+$var parameter 6 $% idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[27] $end
-$var wire 32 $# tmp_mem_array [31:0] $end
-$var parameter 6 %# idx $end
+$var parameter 6 %% idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 &% tmp_byte [7:0] $end
+$var parameter 2 '% idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 (% tmp_byte [7:0] $end
+$var parameter 5 )% idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 *% tmp_byte [7:0] $end
+$var parameter 6 +% idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 ,% tmp_byte [7:0] $end
+$var parameter 6 -% idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[28] $end
-$var wire 32 &# tmp_mem_array [31:0] $end
-$var parameter 6 '# idx $end
+$var parameter 6 .% idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 /% tmp_byte [7:0] $end
+$var parameter 2 0% idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 1% tmp_byte [7:0] $end
+$var parameter 5 2% idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 3% tmp_byte [7:0] $end
+$var parameter 6 4% idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 5% tmp_byte [7:0] $end
+$var parameter 6 6% idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[29] $end
-$var wire 32 (# tmp_mem_array [31:0] $end
-$var parameter 6 )# idx $end
+$var parameter 6 7% idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 8% tmp_byte [7:0] $end
+$var parameter 2 9% idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 :% tmp_byte [7:0] $end
+$var parameter 5 ;% idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 <% tmp_byte [7:0] $end
+$var parameter 6 =% idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 >% tmp_byte [7:0] $end
+$var parameter 6 ?% idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[30] $end
-$var wire 32 *# tmp_mem_array [31:0] $end
-$var parameter 6 +# idx $end
+$var parameter 6 @% idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 A% tmp_byte [7:0] $end
+$var parameter 2 B% idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 C% tmp_byte [7:0] $end
+$var parameter 5 D% idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 E% tmp_byte [7:0] $end
+$var parameter 6 F% idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 G% tmp_byte [7:0] $end
+$var parameter 6 H% idx2 $end
+$upscope $end
 $upscope $end
 $scope begin test_mem[31] $end
-$var wire 32 ,# tmp_mem_array [31:0] $end
-$var parameter 6 -# idx $end
+$var parameter 6 I% idx1 $end
+$scope begin genblk1[0] $end
+$var wire 8 J% tmp_byte [7:0] $end
+$var parameter 2 K% idx2 $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var wire 8 L% tmp_byte [7:0] $end
+$var parameter 5 M% idx2 $end
+$upscope $end
+$scope begin genblk1[16] $end
+$var wire 8 N% tmp_byte [7:0] $end
+$var parameter 6 O% idx2 $end
+$upscope $end
+$scope begin genblk1[24] $end
+$var wire 8 P% tmp_byte [7:0] $end
+$var parameter 6 Q% idx2 $end
+$upscope $end
 $upscope $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b11111 -#
-b11110 +#
-b11101 )#
-b11100 '#
-b11011 %#
-b11010 ##
-b11001 !#
-b11000 }"
-b10111 {"
-b10110 y"
-b10101 w"
-b10100 u"
-b10011 s"
-b10010 q"
-b10001 o"
+b11000 Q%
+b10000 O%
+b1000 M%
+b0 K%
+b11111 I%
+b11000 H%
+b10000 F%
+b1000 D%
+b0 B%
+b11110 @%
+b11000 ?%
+b10000 =%
+b1000 ;%
+b0 9%
+b11101 7%
+b11000 6%
+b10000 4%
+b1000 2%
+b0 0%
+b11100 .%
+b11000 -%
+b10000 +%
+b1000 )%
+b0 '%
+b11011 %%
+b11000 $%
+b10000 "%
+b1000 ~$
+b0 |$
+b11010 z$
+b11000 y$
+b10000 w$
+b1000 u$
+b0 s$
+b11001 q$
+b11000 p$
+b10000 n$
+b1000 l$
+b0 j$
+b11000 h$
+b11000 g$
+b10000 e$
+b1000 c$
+b0 a$
+b10111 _$
+b11000 ^$
+b10000 \$
+b1000 Z$
+b0 X$
+b10110 V$
+b11000 U$
+b10000 S$
+b1000 Q$
+b0 O$
+b10101 M$
+b11000 L$
+b10000 J$
+b1000 H$
+b0 F$
+b10100 D$
+b11000 C$
+b10000 A$
+b1000 ?$
+b0 =$
+b10011 ;$
+b11000 :$
+b10000 8$
+b1000 6$
+b0 4$
+b10010 2$
+b11000 1$
+b10000 /$
+b1000 -$
+b0 +$
+b10001 )$
+b11000 ($
+b10000 &$
+b1000 $$
+b0 "$
+b10000 ~#
+b11000 }#
+b10000 {#
+b1000 y#
+b0 w#
+b1111 u#
+b11000 t#
+b10000 r#
+b1000 p#
+b0 n#
+b1110 l#
+b11000 k#
+b10000 i#
+b1000 g#
+b0 e#
+b1101 c#
+b11000 b#
+b10000 `#
+b1000 ^#
+b0 \#
+b1100 Z#
+b11000 Y#
+b10000 W#
+b1000 U#
+b0 S#
+b1011 Q#
+b11000 P#
+b10000 N#
+b1000 L#
+b0 J#
+b1010 H#
+b11000 G#
+b10000 E#
+b1000 C#
+b0 A#
+b1001 ?#
+b11000 >#
+b10000 <#
+b1000 :#
+b0 8#
+b1000 6#
+b11000 5#
+b10000 3#
+b1000 1#
+b0 /#
+b111 -#
+b11000 ,#
+b10000 *#
+b1000 (#
+b0 &#
+b110 $#
+b11000 ##
+b10000 !#
+b1000 }"
+b0 {"
+b101 y"
+b11000 x"
+b10000 v"
+b1000 t"
+b0 r"
+b100 p"
+b11000 o"
 b10000 m"
-b1111 k"
-b1110 i"
-b1101 g"
-b1100 e"
-b1011 c"
-b1010 a"
-b1001 _"
-b1000 ]"
-b111 ["
-b110 Y"
-b101 W"
-b100 U"
-b11 S"
-b10 Q"
-b1 O"
-b0 M"
+b1000 k"
+b0 i"
+b11 g"
+b11000 f"
+b10000 d"
+b1000 b"
+b0 `"
+b10 ^"
+b11000 ]"
+b10000 ["
+b1000 Y"
+b0 W"
+b1 U"
+b11000 T"
+b10000 R"
+b1000 P"
+b0 N"
+b0 L"
 b11 E"
 b10 D"
 b1 C"
@@ -443,38 +1051,134 @@ b1010 +
 $end
 #0
 $dumpvars
-bx ,#
-bx *#
-bx (#
-bx &#
-bx $#
+bx P%
+bx N%
+bx L%
+bx J%
+bx G%
+bx E%
+bx C%
+bx A%
+bx >%
+bx <%
+bx :%
+bx 8%
+bx 5%
+bx 3%
+bx 1%
+bx /%
+bx ,%
+bx *%
+bx (%
+bx &%
+bx #%
+bx !%
+bx }$
+bx {$
+bx x$
+bx v$
+bx t$
+bx r$
+bx o$
+bx m$
+bx k$
+bx i$
+bx f$
+bx d$
+bx b$
+bx `$
+bx ]$
+bx [$
+bx Y$
+bx W$
+bx T$
+bx R$
+bx P$
+bx N$
+bx K$
+bx I$
+bx G$
+bx E$
+bx B$
+bx @$
+bx >$
+bx <$
+bx 9$
+bx 7$
+bx 5$
+bx 3$
+bx 0$
+bx .$
+bx ,$
+bx *$
+bx '$
+bx %$
+bx #$
+bx !$
+bx |#
+bx z#
+bx x#
+bx v#
+bx s#
+bx q#
+bx o#
+bx m#
+bx j#
+bx h#
+bx f#
+bx d#
+bx a#
+bx _#
+bx ]#
+bx [#
+bx X#
+bx V#
+bx T#
+bx R#
+bx O#
+bx M#
+bx K#
+bx I#
+bx F#
+bx D#
+bx B#
+bx @#
+bx =#
+bx ;#
+bx 9#
+bx 7#
+bx 4#
+bx 2#
+bx 0#
+bx .#
+bx +#
+bx )#
+bx '#
+bx %#
 bx "#
 bx ~"
 bx |"
 bx z"
-bx x"
-bx v"
-bx t"
-bx r"
-bx p"
-bx n"
-bx l"
-bx j"
-bx h"
-bx f"
-bx d"
-bx b"
-bx `"
-bx ^"
-bx \"
-bx Z"
-bx X"
-bx V"
-bx T"
-b100000000010000000011 R"
-b100000000010000000100011 P"
-b1111000100101000000010000010011 N"
-b100011010001010110010000110111 L"
+bx w"
+bx u"
+bx s"
+bx q"
+b0 n"
+b10000 l"
+b100 j"
+b11 h"
+b0 e"
+b10000000 c"
+b100000 a"
+b100011 _"
+b1111000 \"
+b10010100 Z"
+b100 X"
+b10011 V"
+b100011 S"
+b1000101 Q"
+b1100100 O"
+b110111 M"
 b1 K"
 b11111111111111111111111111111111 J"
 1I"
@@ -570,6 +1274,14 @@ b11111111111111111111111111111111 #
 1!
 $end
 #5
+b11111111111111111111111111111111 (
+b11111111111111111111111111111111 O
+b11111111111111111111111111111111 <"
+b11111111111111111111111111111111 )
+b11111111111111111111111111111111 N
+b11111111111111111111111111111111 ;"
+0*
+0Q
 b10 '
 b10 P
 b10 ="
@@ -578,17 +1290,12 @@ b10 ="
 0-
 0,
 #15
-0Q
+b1 S
+1Q
 1,
 #20
 0,
 #25
-b1 S
-1Q
-1,
-#30
-0,
-#35
 b10 S
 1&
 0%
@@ -596,9 +1303,9 @@ b0 )
 b0 N
 b0 ;"
 1,
-#40
+#30
 0,
-#45
+#35
 b100011010001010110010000110111 >"
 b1111000100101000000010000010011 ?"
 b0 @"
@@ -608,16 +1315,15 @@ b100011010001010110010000110111 ?
 b100011010001010110010000110111 J"
 0"
 b0 A"
+0&
 b10 K"
 0I"
 b10 H"
-bx G"
 b0 F"
-0&
 1,
-#50
+#40
 0,
-#55
+#45
 b1010110001000110100 ;
 b1000101000 A
 b1010 7
@@ -626,6 +1332,11 @@ b1000 8
 b1000101000 5
 b100011010001010110000000000000 4
 0D
+0"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 J"
+0$
 b1000110100 :
 b110 >
 b110 0
@@ -634,47 +1345,46 @@ b110 @
 b110 1
 b110 9"
 b110 9
-0"
-b11111111111111111111111111111111 #
-b11111111111111111111111111111111 ?
-b11111111111111111111111111111111 J"
-0$
+b1 K"
 b11 S
 b100011010001010110010000110111 M
-b1 K"
+1,
+#50
+0,
+#55
+b110 S
+b100011010001010110000000000000 d
 1,
 #60
 0,
 #65
-b110 S
-b100011010001010110000000000000 d
-1,
-#70
-0,
-#75
 b0 S
 0Q
 1*
 b100 R
 1,
+#70
+0,
+#75
+b1 S
+1Q
+b11111111111111111111111111111111 )
+b11111111111111111111111111111111 N
+b11111111111111111111111111111111 ;"
+0*
+1,
 #80
 0,
 #85
-b1 S
-1Q
-1,
-#90
-0,
-#95
 b10 S
 1&
 b100 )
 b100 N
 b100 ;"
 1,
-#100
+#90
 0,
-#105
+#95
 b1111000100101000000010000010011 >"
 b100000000010000000100011 ?"
 b1 @"
@@ -683,13 +1393,13 @@ b1111000100101000000010000010011 #
 b1111000100101000000010000010011 ?
 b1111000100101000000010000010011 J"
 0"
+0&
 b10 K"
 b100 F"
-0&
 1,
-#110
+#100
 0,
-#115
+#105
 b100011010001010110011110001001 C
 b100011010001010110011110001001 :"
 b1000000111110001000 ;
@@ -708,6 +1418,11 @@ b1111000100101000000000000000000 4
 0/
 02
 0B
+0"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 J"
+0$
 b11110001001 :
 b0 >
 b0 0
@@ -716,18 +1431,13 @@ b0 @
 b0 1
 b0 9"
 b0 9
-0"
-b11111111111111111111111111111111 #
-b11111111111111111111111111111111 ?
-b11111111111111111111111111111111 J"
-0$
+b1 K"
 b11 S
 b1111000100101000000010000010011 M
-b1 K"
 1,
-#120
+#110
 0,
-#125
+#115
 b100011010001010110111100010010 C
 b100011010001010110111100010010 :"
 b110 S
@@ -735,31 +1445,36 @@ b100011010001010110011110001001 .
 b100011010001010110011110001001 6"
 b100011010001010110011110001001 d
 1,
+#120
+0,
+#125
+b0 S
+0Q
+1*
+b1000 R
+1,
 #130
 0,
 #135
-b0 S
-0Q
-b1000 R
+b1 S
+1Q
+b11111111111111111111111111111111 )
+b11111111111111111111111111111111 N
+b11111111111111111111111111111111 ;"
+0*
 1,
 #140
 0,
 #145
-b1 S
-1Q
-1,
-#150
-0,
-#155
 b10 S
 1&
 b1000 )
 b1000 N
 b1000 ;"
 1,
-#160
+#150
 0,
-#165
+#155
 b100000000010000000100011 >"
 b100000000010000000011 ?"
 b10 @"
@@ -768,13 +1483,13 @@ b100000000010000000100011 #
 b100000000010000000100011 ?
 b100000000010000000100011 J"
 0"
+0&
 b10 K"
 b1000 F"
-0&
 1,
-#170
+#160
 0,
-#175
+#165
 b10000000001000 ;
 b0 A
 03
@@ -790,6 +1505,11 @@ b100000000010000000000000 4
 b1 C
 b1 :"
 0=
+0"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 J"
+0$
 b1000 :
 b10 >
 b10 0
@@ -798,18 +1518,13 @@ b10 @
 b10 1
 b10 9"
 b10 9
-0"
-b11111111111111111111111111111111 #
-b11111111111111111111111111111111 ?
-b11111111111111111111111111111111 J"
-0$
+b1 K"
 b11 S
 b100000000010000000100011 M
-b1 K"
 1,
-#180
+#170
 0,
-#185
+#175
 b101 S
 1&
 1%
@@ -820,9 +1535,9 @@ b0 )
 b0 N
 b0 ;"
 1,
-#190
+#180
 0,
-#195
+#185
 b100011010001010110010000110111 >"
 b1111000100101000000010000010011 ?"
 b0 @"
@@ -832,40 +1547,49 @@ b11 K"
 b100011010001010110011110001001 G"
 b0 F"
 1,
+#190
+0,
+#195
+b10001001 M"
+b1100111 O"
+0"
+1$
+b100 K"
+b100011010001010110011110001001 >"
+1,
 #200
 0,
 #205
 0"
-1$
-b100 K"
-b100011010001010110011110001001 L"
-b100011010001010110011110001001 >"
+0$
+b1 K"
+b110 S
+0&
 1,
 #210
 0,
 #215
-0"
-0$
-b110 S
-0&
-b1 K"
+b0 S
+0Q
+1*
+b1100 R
 1,
 #220
 0,
 #225
-b0 S
-0Q
-b1100 R
+b1 S
+1Q
+b11111111111111111111111111111111 (
+b11111111111111111111111111111111 O
+b11111111111111111111111111111111 <"
+b11111111111111111111111111111111 )
+b11111111111111111111111111111111 N
+b11111111111111111111111111111111 ;"
+0*
 1,
 #230
 0,
 #235
-b1 S
-1Q
-1,
-#240
-0,
-#245
 b10 S
 1&
 0%
@@ -873,9 +1597,9 @@ b1100 )
 b1100 N
 b1100 ;"
 1,
-#250
+#240
 0,
-#255
+#245
 b100000000010000000011 >"
 bx ?"
 b11 @"
@@ -884,14 +1608,15 @@ b100000000010000000011 #
 b100000000010000000011 ?
 b100000000010000000011 J"
 0"
-0&
 b10 K"
 0I"
+b11111111111111111111111111111111 G"
 b1100 F"
+0&
 1,
-#260
+#250
 0,
-#265
+#255
 1D
 b0 E
 b0 7"
@@ -903,11 +1628,6 @@ b1000 5
 b100000000000000000000 4
 b0 C
 b0 :"
-0"
-b11111111111111111111111111111111 #
-b11111111111111111111111111111111 ?
-b11111111111111111111111111111111 J"
-0$
 b1 :
 b0 >
 b0 0
@@ -916,13 +1636,18 @@ b0 @
 b0 1
 b0 9"
 b0 9
-b1 K"
+0"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 J"
+0$
 b11 S
 b100000000010000000011 M
+b1 K"
 1,
-#270
+#260
 0,
-#275
+#265
 b100 S
 1&
 b0 '
@@ -932,9 +1657,9 @@ b1 )
 b1 N
 b1 ;"
 1,
-#280
+#270
 0,
-#285
+#275
 b100011010001010110011110001001 >"
 b1111000100101000000010000010011 ?"
 b0 @"
@@ -948,44 +1673,52 @@ b10 K"
 b0 H"
 b1 F"
 1,
-#290
+#280
 0,
-#295
+#285
 0"
 b11111111111111111111111111111111 #
 b11111111111111111111111111111111 ?
 b11111111111111111111111111111111 J"
 0$
+b1 K"
 b110 S
 b1100111 d
 0&
-b1 K"
+1,
+#290
+0,
+#295
+b0 S
+0Q
+1*
+b10000 R
 1,
 #300
 0,
 #305
-b0 S
-0Q
-b10000 R
+b1 S
+1Q
+b11111111111111111111111111111111 )
+b11111111111111111111111111111111 N
+b11111111111111111111111111111111 ;"
+0*
+b10 '
+b10 P
+b10 ="
 1,
 #310
 0,
 #315
-b1 S
-1Q
-1,
-#320
-0,
-#325
 b10 S
 1&
 b10000 )
 b10000 N
 b10000 ;"
 1,
-#330
+#320
 0,
-#335
+#325
 bx >"
 bx ?"
 b100 @"
@@ -995,13 +1728,14 @@ bx ?
 bx J"
 0"
 b0 A"
-0&
 b10 K"
+b10 H"
 b10000 F"
+0&
 1,
-#340
+#330
 0,
-#345
+#335
 bx0 ;
 bx0 A
 bx E
@@ -1020,11 +1754,6 @@ x<
 x/
 x2
 xB
-0"
-b11111111111111111111111111111111 #
-b11111111111111111111111111111111 ?
-b11111111111111111111111111111111 J"
-0$
 bx :
 bx >
 bx 0
@@ -1033,9 +1762,18 @@ bx @
 bx 1
 bx 9"
 bx 9
-b1 K"
+0"
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 J"
+0$
 b11 S
 bx M
+b1 K"
+1,
+#340
+0,
+#345
 1,
 #350
 0,

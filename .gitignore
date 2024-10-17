@@ -1,0 +1,5 @@
+build/
+.vscode/
+synth_build/
+*.out
+*.vcd

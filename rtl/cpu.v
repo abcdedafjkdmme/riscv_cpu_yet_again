@@ -93,9 +93,17 @@ module cpu (
       pc <= 0;
       instr <= 0;
       o_wb_sel <= 3'b010;
+      o_wb_stall <= 0;
+      o_wb_ack <= 0;
+      o_wb_addr <= 32'hFFFFFFFF;
+      o_wb_data <= 32'hFFFFFFFF;
       r_state <= S_IDLE;
     end else if (r_state == S_IDLE) begin
       o_wb_stall <= 0;
+      o_wb_sel <= 3'b010;
+      o_wb_ack <= 0;
+      o_wb_addr <= 32'hFFFFFFFF;
+      o_wb_data <= 32'hFFFFFFFF;
       if (i_wb_stb && !o_wb_stall) begin
         o_wb_stall <= 1;
         r_state <= S_REQ_MEM_READ;
