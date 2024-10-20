@@ -149,7 +149,7 @@ module cpu (
       end  //jal instr
         else if (`IS_JAL_INSTR(instr)) begin
         $display("cpu executing jal instr");
-        reg_file[rd] <= pc + 4;
+        reg_file[rd] <= (rd == 0) ? 0 : pc + 4;
         pc <= pc + jalr_instr_offset - 4;  // -4 because we add it  in S_INC
         r_state <= S_INC;
       end  //jalr instr
@@ -157,7 +157,7 @@ module cpu (
         $display("cpu executing jalr instr");
         $display("next instr addr is %h", pc + 4);
         $display("calculated pc is %h", pc + reg_file[rs1] + load_instr_offset);
-        reg_file[rd] <= pc + 4;
+        reg_file[rd] <= (rd == 0) ? 0 : pc + 4;
         pc <= pc + reg_file[rs1] + load_instr_offset - 4;  // -4 because we add it  in S_INC
         r_state <= S_INC;
       end  //branch instr
@@ -174,7 +174,7 @@ module cpu (
       end else if (is_alu_instr) begin
         if (is_alu_imm_instr) $display("cpu executing alu imm instr");
         else if (is_alu_reg_instr) $display("cpu executing alu reg instr");
-        else $display("ERROR");
+        else $display("ERROR in alu instr");
 
         $display("cpu alu i_a is %h", alu_i_a);
         $display("cpu alu i_b is %h", alu_i_b);
@@ -182,12 +182,12 @@ module cpu (
         $display("alu sub/arith shift is %b", alu_sub_or_arith_shift);
         $display("cpu alu output is %h", alu_o_y);
         $display("cpu stored result to rd x", rd);
-        reg_file[rd] <= alu_o_y;
+        reg_file[rd] <= (rd == 0) ? 0 : alu_o_y;
         r_state <= S_INC;
       end else if (`IS_LUI_INSTR(instr)) begin
         $display("cpu executing lui instr");
         $display("stored %h to rd x", u_instr_offset, rd);
-        reg_file[rd] <= u_instr_offset;
+        reg_file[rd] <= (rd == 0) ? 0 : u_instr_offset;
         r_state <= S_INC;
       end else if (`IS_AUIPC_INSTR(instr)) begin
         $display("cpu executing auipc instr");
@@ -196,13 +196,14 @@ module cpu (
         r_state <= S_INC;
       end else begin
         $display("ERROR UNKNOWN INSTR %b at addr %h", instr, pc);
+        //$finish();
       end
     end else if (r_state == S_END_MEM_READ_INSTR) begin
       if (i_wb_ack) begin
         o_wb_stb <= 0;
         $display("cpu finished mem read instr");
         $display("read %h to rd x", i_wb_data, rd);
-        reg_file[rd] <= i_wb_data;
+        reg_file[rd] <= (rd == 0) ? 0 : i_wb_data;
         r_state <= S_INC;
       end
     end else if (r_state == S_END_MEM_WRITE_INSTR) begin
