@@ -1,9 +1,9 @@
 PCF_FILE         =  test.pcf
 VCD_FILE 		     =  tb_top.vcd
 SBY_FILE 		     =  formal/test.sby
-SYNTH_V_SRCS     =  rtl/alu.v 
-SYNTH_TOP_MODULE =  alu
-IVERILOG_SRCS	   =  rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/mem.v rtl/alu.v rtl/bus.v
+SYNTH_V_SRCS     =  rtl/macros.v rtl/alu.v rtl/reg_file.v  rtl/cpu.v
+SYNTH_TOP_MODULE =  cpu
+IVERILOG_SRCS	   =  rtl/reg_file.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/mem.v rtl/alu.v rtl/bus.v
  
 YOSYS_FLAGS      =  -p 'synth_ice40 -json $(OUTPUT_JSON)'
 NEXTPNR_FLAGS    =  --hx8k --package ct256 --pcf-allow-unconstrained
