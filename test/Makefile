@@ -1,5 +1,5 @@
 SHELL = /bin/sh
-ARCH = riscv64-unknown-elf
+ARCH = riscv32-unknown-elf
 CC = $(ARCH)-gcc
 LD = $(ARCH)-ld
 OBJCOPY = $(ARCH)-objcopy
@@ -18,7 +18,7 @@ C_OBJS 	=  $(C_SRCS:$(SDIR)/%.c=$(BDIR)/%.o)
 all: clean kernel.txt
 
 kernel.txt : kernel.hex 
-	objcopy -I binary -O binary --reverse-bytes=4  kernel.hex kernel_big_endian.hex
+	$(OBJCOPY) -I binary -O binary --reverse-bytes=4  kernel.hex kernel_big_endian.hex
 	xxd -ps -c 4 kernel_big_endian.hex > kernel.txt 
 
 kernel.hex: kernel.elf

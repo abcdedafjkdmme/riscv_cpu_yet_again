@@ -15,13 +15,10 @@ module mem (
   initial $readmemh("test/kernel.txt", mem_array);  //Assuming name of txt is data.txt
 
   generate
-    genvar idx1;
-    for (idx1 = 0; idx1 < 32; idx1 = idx1 + 1) begin : test_mem
-      genvar idx2;
-      for (idx2 = 0; idx2 < 24 + 1; idx2 = idx2 + 8) begin
-        wire [7:0] tmp_byte;
-        assign tmp_byte = mem_array[idx1][idx2+7:idx2];
-      end
+    genvar idx;
+    for (idx = 0; idx < 32; idx = idx + 1) begin
+      wire [31:0] tmp_word;
+      assign tmp_word = mem_array[idx];
     end
   endgenerate
 
@@ -61,10 +58,10 @@ module mem (
 
         if (i_wb_we) begin
           r_state <= S_WRITE;
-          $display("mem wil begin write");
+          //$display("mem wil begin write");
         end else begin
           r_state <= S_READ;
-          $display("mem will begin read");
+          //$display("mem will begin read");
         end
       end
     end else if (r_state == S_WRITE) begin
@@ -129,7 +126,7 @@ module mem (
       r_state <= S_END_READ;
     end else if (r_state == S_END_READ) begin
       r_state <= S_IDLE;
-      $display("mem finished read");
+      //$display("mem finished read");
     end else begin
       $display("ERROR INVALID STATE IN MEMORY");
     end

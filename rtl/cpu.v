@@ -137,7 +137,7 @@ module cpu (
         o_wb_we   <= 0;
         o_wb_stb  <= 1;
         r_state   <= S_END_MEM_READ;
-        $display("cpu requeseted read from mem");
+        //$display("cpu requeseted read from mem");
       end
     end else if (r_state == S_END_MEM_READ) begin
       o_wb_stb <= 0;
@@ -208,7 +208,7 @@ module cpu (
         $display("next instr addr is %h", pc + 4);
         $display("calculated pc is %h", pc + r_rs1 + load_instr_offset);
         r_rd <= pc + 4;
-        pc <= pc + r_rs1 + load_instr_offset - 4;  // -4 because we add it  in S_INC
+        pc <= r_rs1 + load_instr_offset - 4;  // -4 because we add it  in S_INC
         r_state <= S_WRITE_RD;
       end  //branch instr
       else if (`IS_BRANCH_INSTR(instr)) begin
@@ -242,8 +242,8 @@ module cpu (
       end else if (`IS_AUIPC_INSTR(instr)) begin
         $display("cpu executing auipc instr");
         $display("cpu new pc is %h", pc + $signed(u_instr_offset));
-        pc <= pc + $signed(u_instr_offset);
-        r_state <= S_INC;
+        r_rd <= pc + $signed(u_instr_offset);
+        r_state <= S_WRITE_RD;
       end else begin
         $display("ERROR UNKNOWN INSTR %b at addr %h", instr, pc);
         //$finish();

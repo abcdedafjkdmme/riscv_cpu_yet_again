@@ -17,8 +17,10 @@ clean:
 	rm -rf $(SYNTH_BUILD_DIR)
 
 sim: $(IVERILOG_SRCS)
+	cd test && make
 	iverilog $(IVERILOG_SRCS) -Irtl
 	./a.out
+	gtkwave tb_top.vcd
 
 synth: $(SYNTH_V_SRCS)
 	mkdir -p $(SYNTH_BUILD_DIR)
