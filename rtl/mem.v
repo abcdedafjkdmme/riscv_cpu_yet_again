@@ -1,4 +1,6 @@
-module mem (
+module mem #(
+  parameter MEM_SIZE = 2**20
+)(
     input wire i_clk,
     input wire i_reset,
     input wire i_wb_stb,
@@ -11,12 +13,12 @@ module mem (
     output reg o_wb_stall
 );
 
-  reg [31:0] mem_array[2**20];
+  reg [31:0] mem_array[MEM_SIZE];
   initial $readmemh("test/kernel.txt", mem_array);  //Assuming name of txt is data.txt
 
   generate
     genvar idx;
-    for (idx = 0; idx < 32; idx = idx + 1) begin
+    for (idx = 0; idx < 2**10; idx = idx + 1) begin
       wire [31:0] tmp_word;
       assign tmp_word = mem_array[idx];
     end
@@ -51,6 +53,10 @@ module mem (
     end
     if (r_state == S_IDLE) begin
       if (i_wb_stb && !o_wb_stall) begin
+        if(i_wb_addr > MEM_SIZE*4) begin
+          $display("ERR mem address is larger than mem size");
+          $finish;
+        end
         local_addr <= i_wb_addr;
         local_data <= i_wb_data;
         local_sel  <= i_wb_sel;

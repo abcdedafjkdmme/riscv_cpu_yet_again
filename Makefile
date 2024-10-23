@@ -13,10 +13,13 @@ OUTPUT_ASC       =  $(SYNTH_BUILD_DIR)/test.asc
 OUTPUT_JSON      =  $(SYNTH_BUILD_DIR)/test.json
 OUTPUT_BIN       =  $(SYNTH_BUILD_DIR)/test.bin
 
+all: sim 
 clean:
+	rm a.out 
+	rm tb_top.vcd
 	rm -rf $(SYNTH_BUILD_DIR)
 
-sim: $(IVERILOG_SRCS)
+sim: $(IVERILOG_SRCS) test/Makefile
 	cd test && make
 	iverilog $(IVERILOG_SRCS) -Irtl
 	./a.out

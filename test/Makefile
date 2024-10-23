@@ -8,7 +8,7 @@ SDIR = src
 BDIR = build
 CFLAGS = -Wall -march=rv32i -mabi=ilp32 -g -I $(IDIR) -O0
 SFLAGS = $(CFLAGS)
-LDFLAGS = 
+LDFLAGS = -lgcc
 OBJCOPY	=  $(ARCH)-objcopy
 S_SRCS 	=  $(wildcard $(SDIR)/*.s)
 C_SRCS 	=  $(wildcard $(SDIR)/*.c)
@@ -25,7 +25,7 @@ kernel.hex: kernel.elf
 	$(OBJCOPY) kernel.elf -O binary kernel.hex
 
 kernel.elf: $(S_OBJS) link.ld $(C_OBJS)
-	$(LD) $(LDFLAGS) -T link.ld -o kernel.elf $(S_OBJS) $(C_OBJS)
+	$(CC) $(LDFLAGS) -T link.ld -o kernel.elf $(S_OBJS) $(C_OBJS) -lgcc -nostartfiles
 
 $(BDIR)/%.o: $(SDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -34,4 +34,4 @@ $(BDIR)/%_asm.o: $(SDIR)/%.s
 	$(CC) $(SFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(BDIR)/*_asm.o $(BDIR)/*.o kernel.elf kernel.img
+	rm -f $(BDIR)/*_asm.o $(BDIR)/*.o kernel.elf kernel.img kernel.hex kernel_big_endian.hex kernel.txt
