@@ -11,8 +11,8 @@ module mem (
     output reg o_wb_stall
 );
 
-  reg [31:0] mem_array[2**16];
-  initial $readmemh("example_program.txt", mem_array);  //Assuming name of txt is data.txt
+  reg [31:0] mem_array[2**20];
+  initial $readmemh("test/kernel.txt", mem_array);  //Assuming name of txt is data.txt
 
   generate
     genvar idx1;

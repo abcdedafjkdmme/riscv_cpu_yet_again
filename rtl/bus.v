@@ -12,7 +12,7 @@ module bus (
 );
 
   parameter MEM_ADDR_START = 'h0;
-  parameter MEM_ADDR_END = 'hFFFF;
+  parameter MEM_ADDR_END = 'hFFFFFFFF;
 
   
   reg mem_i_wb_stb;

@@ -242,7 +242,7 @@ module cpu (
       end else if (`IS_AUIPC_INSTR(instr)) begin
         $display("cpu executing auipc instr");
         $display("cpu new pc is %h", pc + $signed(u_instr_offset));
-        pc <= pc + $signed(u_instr_offset) - 4;
+        pc <= pc + $signed(u_instr_offset);
         r_state <= S_INC;
       end else begin
         $display("ERROR UNKNOWN INSTR %b at addr %h", instr, pc);
