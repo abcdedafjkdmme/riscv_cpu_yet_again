@@ -16,6 +16,7 @@ module cpu (
     output reg o_wb_ack
 );
 
+
   parameter S_IDLE = 0;
   parameter S_REQ_MEM_READ = 1;
   parameter S_END_MEM_READ = 2;
@@ -29,6 +30,7 @@ module cpu (
   parameter S_WRITE_RD = 10;
   parameter S_END_RD = 11;
   parameter S_INC = 12;
+  parameter S_PAUSED = 13;
 
   integer r_state = S_IDLE;
 
@@ -44,13 +46,14 @@ module cpu (
   wire reg_file_o_wb_ack;
   wire reg_file_o_wb_stall;
 
-  reg_file u_reg_file (
+  mem_bram #(.MEM_SIZE(32),.MEM_DUMP_SIZE(32),.MEM_FILE("reg_file.txt"),.HARDWIRE_X0(1'b1)) u_reg_file (
       .i_clk     (i_clk),
       .i_reset   (i_reset),
       .i_wb_stb  (reg_file_i_wb_stb),
       .i_wb_we   (reg_file_i_wb_we),
       .i_wb_addr (reg_file_i_wb_addr),
       .i_wb_data (reg_file_i_wb_data),
+      .i_wb_sel  (4'b1111),
       .o_wb_data (reg_file_o_wb_data),
       .o_wb_ack  (reg_file_o_wb_ack),
       .o_wb_stall(reg_file_o_wb_stall)
@@ -105,7 +108,7 @@ module cpu (
 
   always @(posedge i_clk) begin
     if (i_reset) begin
-      $display("Resetting CPU \n");
+      $display(("Resetting CPU \n"));
       pc <= 0;
       instr <= 0;
       o_wb_sel <= 3'b010;
@@ -137,7 +140,7 @@ module cpu (
         o_wb_we   <= 0;
         o_wb_stb  <= 1;
         r_state   <= S_END_MEM_READ;
-        //$display("cpu requeseted read from mem");
+        //$display(("cpu requeseted read from mem");
       end
     end else if (r_state == S_END_MEM_READ) begin
       o_wb_stb <= 0;
@@ -221,6 +224,8 @@ module cpu (
           $display("cpu branch not taken");
           r_state <= S_INC;
         end
+      end else if(`IS_PAUSE_INSTR(instr)) begin 
+        r_state <= S_PAUSED;
       end else if (is_alu_instr) begin
         if (is_alu_imm_instr) $display("cpu executing alu imm instr");
         else if (is_alu_reg_instr) $display("cpu executing alu reg instr");
@@ -260,7 +265,7 @@ module cpu (
       if (i_wb_ack) begin
         o_wb_stb <= 0;
         $display("cpu finished mem write instr");
-        //$display("written %h to addr %h", o_wb_data, o_wb_addr);
+        //$display(("written %h to addr %h", o_wb_data, o_wb_addr);
         r_state <= S_INC;
       end
     end else if (r_state == S_WRITE_RD) begin
@@ -275,14 +280,19 @@ module cpu (
       reg_file_i_wb_stb <= 0;
       if (reg_file_o_wb_ack) begin
         r_state <= S_INC;
-      end
+      end 
+    end else if(r_state == S_PAUSED) begin
+      $display("cpu is stalled");
     end else if (r_state == S_INC) begin
-      $display("finished instr");
+      $display("cpu finished instr");
       $display("\n");
       pc <= pc + 4;
       o_wb_ack <= 1;
       o_wb_stall <= 0;
       r_state <= S_IDLE;
+    end else begin
+      $display("ERR cpu in undefined state");
+      //$finish();
     end
   end
 endmodule

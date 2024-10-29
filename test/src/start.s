@@ -3,5 +3,3 @@
 _start:
   la sp, stack_top
   j main
-loop:
-  j loop

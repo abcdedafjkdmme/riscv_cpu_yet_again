@@ -3,3 +3,7 @@ build/
 synth_build/
 *.out
 *.vcd
+*.o 
+*.hex 
+*.elf 
+test/build/

@@ -1,27 +1,22 @@
-int fib(int n);
-int mult(int a,int b);
+#include <stdint.h>
 
-int f[3] = {10,2,3};
-
-int main(){
-  //int ark = mult(2,3);
-  //*((int*)1000) = ark;
-  //int a = fib(10);
- // *((int*)(0x0)) = a;
-  //*((int*)(0x4)) = f[0];
-  *((int*)(0x8)) = mult(21,33);
-  while(1==1){
-    ;
+uint16_t fib(uint16_t n){
+  if(n == 0){
+    return 0;
   }
-}
-
-int fib(int n){
-  if(n%2 == 0){
+  else if(n == 1){
     return 1;
   }
-  else return 0;
+  else{
+    return fib(n-1) + fib(n-2);
+  }
 }
 
-int mult(int a, int b){
-  return a*b;
+
+int main(){
+  uint16_t fib_result = fib(10);
+  *((uint32_t*)100) = fib_result;
+  while(1){;}
+
 }
+

@@ -18,14 +18,14 @@ C_OBJS 	=  $(C_SRCS:$(SDIR)/%.c=$(BDIR)/%.o)
 all: clean kernel.txt
 
 kernel.txt : kernel.hex 
-	$(OBJCOPY) -I binary -O binary --reverse-bytes=4  kernel.hex kernel_big_endian.hex
-	xxd -ps -c 4 kernel_big_endian.hex > kernel.txt 
+	$(OBJCOPY) -I binary -O binary --reverse-bytes=4 build/kernel.hex build/kernel_big_endian.hex
+	xxd -ps -c 4 build/kernel_big_endian.hex > build/kernel.txt 
 
 kernel.hex: kernel.elf
-	$(OBJCOPY) kernel.elf -O binary kernel.hex
+	$(OBJCOPY) build/kernel.elf -O binary build/kernel.hex
 
 kernel.elf: $(S_OBJS) link.ld $(C_OBJS)
-	$(CC) $(LDFLAGS) -T link.ld -o kernel.elf $(S_OBJS) $(C_OBJS) -lgcc -nostartfiles
+	$(CC) $(LDFLAGS) -T link.ld -o build/kernel.elf $(S_OBJS) $(C_OBJS) -lgcc -nostartfiles
 
 $(BDIR)/%.o: $(SDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -34,4 +34,4 @@ $(BDIR)/%_asm.o: $(SDIR)/%.s
 	$(CC) $(SFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(BDIR)/*_asm.o $(BDIR)/*.o kernel.elf kernel.img kernel.hex kernel_big_endian.hex kernel.txt
+	rm -f $(BDIR)/*_asm.o $(BDIR)/*.o build/kernel.elf build/kernel.img build/kernel.hex build/kernel_big_endian.hex build/kernel.txt

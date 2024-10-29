@@ -7,3 +7,4 @@
 `define IS_IMM_ALU_INSTR(instr) (instr[6:0] == 'b00100_11)
 `define IS_LUI_INSTR(instr) (instr[6:0] == 'b01101_11)
 `define IS_AUIPC_INSTR(instr) (instr[6:0] == 'b00101_11)
+`define IS_PAUSE_INSTR(instr) (instr == 'b0000_0001_0000_00000_000_00000_0001111 )

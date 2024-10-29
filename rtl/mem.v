@@ -14,7 +14,7 @@ module mem #(
 );
 
   reg [31:0] mem_array[MEM_SIZE];
-  initial $readmemh("test/kernel.txt", mem_array);  //Assuming name of txt is data.txt
+  initial $readmemh("test/build/kernel.txt", mem_array);  //Assuming name of txt is data.txt
 
   generate
     genvar idx;
