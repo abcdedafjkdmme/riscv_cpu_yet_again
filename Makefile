@@ -1,14 +1,14 @@
 PCF_FILE         =  test.pcf
 VCD_FILE 		     =  tb_top.vcd
 SBY_FILE 		     =  formal/test.sby
-SYNTH_V_SRCS     =  rtl/mem_bram.v rtl/cpu.v rtl/alu.v rtl/macros.v
-SYNTH_TOP_MODULE =  cpu
+SYNTH_V_SRCS     =  rtl/soc.v rtl/bus.v rtl/mem_bram.v rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v
+SYNTH_TOP_MODULE =  soc
 
-IVERILOG_SRCS	   =  rtl/top.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/mem.v rtl/alu.v rtl/bus.v
-IVERILOG_FLAGS   = -Irtl -dCPU_SIM_DISPLAY_DISABLED
+IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/alu.v rtl/bus.v
+IVERILOG_FLAGS   =  -Irtl -dCPU_SIM_DISPLAY_DISABLED
  
 YOSYS_FLAGS      =  -p 'synth_ice40 -json $(OUTPUT_JSON)'
-NEXTPNR_FLAGS    =  --hx8k --package ct256 --pcf-allow-unconstrained
+NEXTPNR_FLAGS    =  --hx8k --package ct256 --pcf-allow-unconstrained --placed-svg synth_build/place.svg --routed-svg synth_build/route.svg
  
 SYNTH_BUILD_DIR  =  synth_build
 OUTPUT_ASC       =  $(SYNTH_BUILD_DIR)/test.asc

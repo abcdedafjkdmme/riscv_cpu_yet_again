@@ -1,3 +1,4 @@
+`default_nettype none
 module alu (
     input wire [31:0] i_a,
     input wire [31:0] i_b,
@@ -16,8 +17,8 @@ module alu (
         else o_y = $signed(i_a) + $signed(i_b);
       end
       3'b001:  o_y = i_a << i_b[4:0];
-      3'b010:  o_y = ($signed(i_a) < $signed(i_b));
-      3'b011:  o_y = i_a < i_b;
+      3'b010:  o_y = {{31{1'b0}},($signed(i_a) < $signed(i_b))};
+      3'b011:  o_y = {{31{1'b0}}, i_a < i_b};
       3'b100:  o_y = i_a ^ i_b;
       3'b101: begin
         if(i_arith_shift) o_y = i_a >>> i_b[4:0];

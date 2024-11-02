@@ -7,9 +7,10 @@ module tb_top;
   
 
 
-  top u_top(
+  soc u_soc(
     .i_clk   (clk   ),
-    .i_reset (reset )
+    .i_reset (reset ),
+    .i_stb   (1'b1  )
   );
   
   localparam CLK_PERIOD = 2;

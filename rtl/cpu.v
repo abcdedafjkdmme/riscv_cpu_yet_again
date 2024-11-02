@@ -1,5 +1,6 @@
 `include "macros.v"
 
+`default_nettype none
 module cpu (
     input wire i_clk,
     input wire i_reset,
@@ -63,9 +64,9 @@ module cpu (
   reg [31:0] r_rs2 = 32'hFFFFFFFF;
   reg [31:0] r_rd = 32'hFFFFFFFF;
 
-  wire [31:0] rs1 = instr[19:15];
-  wire [31:0] rs2 = instr[24:20];
-  wire [31:0] rd = instr[11:7];
+  wire [31:0] rs1 = {{27{1'b0}},instr[19:15]};
+  wire [31:0] rs2 = {{27{1'b0}},instr[24:20]};
+  wire [31:0] rd =  {{27{1'b0}},instr[11:7]};
   wire [31:0] store_instr_offset = $signed({instr[31:25], instr[11:7]});
   wire [31:0] load_instr_offset = $signed(instr[31:20]);
   wire [31:0] jalr_instr_offset = $signed({instr[31], instr[19:12], instr[20], instr[30:21], 1'b0});
@@ -140,7 +141,7 @@ module cpu (
         o_wb_we   <= 0;
         o_wb_stb  <= 1;
         r_state   <= S_END_MEM_READ;
-        //$display(("cpu requeseted read from mem");
+        $display("cpu requeseted read from mem");
       end
     end else if (r_state == S_END_MEM_READ) begin
       o_wb_stb <= 0;

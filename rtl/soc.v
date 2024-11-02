@@ -1,6 +1,10 @@
-module top (
+`default_nettype none
+module soc (
   input wire i_clk,
-  input wire i_reset
+  input wire i_reset,
+  input wire i_stb,
+  output wire o_stall,
+  output wire o_ack
 );
 
   wire        bus_i_wb_stb;
@@ -26,14 +30,11 @@ module top (
     .o_wb_stall (bus_o_wb_stall )
   );
   
-  wire cpu_o_wb_ack;
-  wire cpu_i_wb_stb = 1;
-  wire cpu_o_wb_stall;
 
   cpu u_cpu (
       .i_clk     (i_clk),
       .i_reset   (i_reset),
-      .i_wb_stb  (cpu_i_wb_stb),
+      .i_wb_stb  (i_stb),
       .i_wb_ack  (bus_o_wb_ack),
       .i_wb_stall(bus_o_wb_stall),
       .i_wb_data (bus_o_wb_data),
@@ -42,8 +43,8 @@ module top (
       .o_wb_we   (bus_i_wb_we),
       .o_wb_stb  (bus_i_wb_stb),
       .o_wb_sel  (bus_i_wb_sel),
-      .o_wb_ack  (cpu_o_wb_ack),
-      .o_wb_stall(cpu_o_wb_stall)
+      .o_wb_ack  (o_ack),
+      .o_wb_stall(o_stall)
   );
   
 endmodule

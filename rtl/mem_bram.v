@@ -1,3 +1,4 @@
+`default_nettype none
 module mem_bram #(
     parameter MEM_SIZE = 2 ** 10,
     parameter MEM_DUMP_SIZE = 2 ** 10,
@@ -18,24 +19,27 @@ module mem_bram #(
 
   localparam S_IDLE = 0;
   localparam S_READ = 1;
-  localparam S_WRITE = 2;
+  localparam S_END_READ = 2;
+  localparam S_WRITE = 3;
 
   integer r_state = S_IDLE;
 
   reg [31:0] local_data = 32'hFFFFFFFF;
   reg [31:0] local_addr = 32'hFFFFFFFF;
 
-  reg [31:0] mem_bram[MEM_SIZE];
+  reg [31:0] bram[MEM_SIZE];
+
+  reg [31:0] bram_o_data;
 
   initial begin
-    $readmemh(MEM_FILE, mem_bram);
+    $readmemh(MEM_FILE, bram);
   end
 
   generate
     genvar idx;
     for (idx = 0; idx < MEM_DUMP_SIZE; idx = idx + 1) begin
-      wire [31:0] mem_bram_tmp;
-      assign mem_bram_tmp = mem_bram[idx];
+      wire [31:0] bram_tmp;
+      assign bram_tmp = bram[idx];
     end
   endgenerate
 
@@ -45,6 +49,7 @@ module mem_bram #(
       r_state <= S_IDLE;
       local_data <= 32'hFFFFFFFF;
       local_addr <= 32'hFFFFFFFF;
+      bram_o_data <= 32'hFFFFFFFF;
       o_wb_ack <= 0;
       o_wb_stall <= 0;
       o_wb_data <= 32'hFFFFFFFF;
@@ -53,7 +58,7 @@ module mem_bram #(
       o_wb_ack   <= 0;
       o_wb_stall <= 0;
       if (i_wb_stb && !o_wb_stall) begin
-        if (HARDWIRE_X0 && i_wb_addr == 0) begin
+        if (HARDWIRE_X0 == 1 && i_wb_addr == 0) begin
           o_wb_data  <= 32'h0;
           o_wb_stall <= 0;
           o_wb_ack   <= 1;
@@ -64,7 +69,10 @@ module mem_bram #(
           r_state <= i_wb_we ? S_WRITE : S_READ;
         end
       end
-    end else if (r_state == S_READ) begin
+    end else if(r_state == S_READ) begin
+      r_state <= S_END_READ;
+    end else if (r_state == S_END_READ) begin
+      o_wb_data <= bram_o_data;
       o_wb_stall <= 0;
       o_wb_ack <= 1;
       r_state <= S_IDLE;
@@ -77,16 +85,16 @@ module mem_bram #(
 
   always @(posedge i_clk) begin
     if ((r_state == S_WRITE) && i_wb_sel[3]) begin
-      mem_bram[local_addr][31:24] <= local_data[31:24];
+      bram[local_addr][31:24] <= local_data[31:24];
     end
     if ((r_state == S_WRITE) && i_wb_sel[2]) begin
-      mem_bram[local_addr][23:16] <= local_data[23:16];
+      bram[local_addr][23:16] <= local_data[23:16];
     end
     if ((r_state == S_WRITE) && i_wb_sel[1]) begin
-      mem_bram[local_addr][15:8] <= local_data[15:8];
+      bram[local_addr][15:8] <= local_data[15:8];
     end
     if ((r_state == S_WRITE) && i_wb_sel[0]) begin
-      mem_bram[local_addr][7:0] <= local_data[7:0];
+      bram[local_addr][7:0] <= local_data[7:0];
     end
 
   end
@@ -94,7 +102,7 @@ module mem_bram #(
 
   always @(posedge i_clk) begin
     if (r_state == S_READ) begin
-      o_wb_data <= mem_bram[local_addr];
+      bram_o_data <= bram[local_addr];
     end
   end
 

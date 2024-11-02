@@ -14,6 +14,7 @@ uint16_t fib(uint16_t n){
 
 
 int main(){
+  *((uint32_t*)100) = 0xFFFFFFFF;
   uint16_t fib_result = fib(10);
   *((uint32_t*)100) = fib_result;
   while(1){;}
