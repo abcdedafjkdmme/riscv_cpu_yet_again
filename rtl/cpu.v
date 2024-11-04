@@ -247,7 +247,7 @@ module cpu (
         r_state <= S_WRITE_RD;
       end else if (`IS_AUIPC_INSTR(instr)) begin
         $display("cpu executing auipc instr");
-        $display("cpu new pc is %h", pc + $signed(u_instr_offset));
+        $display("cpu wrote %h to reg %h", pc + $signed(u_instr_offset), rd);
         r_rd <= pc + $signed(u_instr_offset);
         r_state <= S_WRITE_RD;
       end else begin
@@ -255,16 +255,16 @@ module cpu (
         //$finish();
       end
     end else if (r_state == S_END_MEM_READ_INSTR) begin
-      if (i_wb_ack) begin
-        o_wb_stb <= 0;
+      o_wb_stb <= 0;
+      if (i_wb_ack) begin 
         $display("cpu finished mem read instr");
         $display("read %h to rd x", i_wb_data, rd);
         r_rd <= i_wb_data;
         r_state <= S_WRITE_RD;
       end
     end else if (r_state == S_END_MEM_WRITE_INSTR) begin
+      o_wb_stb <= 0;
       if (i_wb_ack) begin
-        o_wb_stb <= 0;
         $display("cpu finished mem write instr");
         //$display(("written %h to addr %h", o_wb_data, o_wb_addr);
         r_state <= S_INC;

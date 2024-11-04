@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-uint16_t fib(uint16_t n){
+int fib(int n){
   if(n == 0){
     return 0;
   }
@@ -14,9 +14,9 @@ uint16_t fib(uint16_t n){
 
 
 int main(){
-  *((uint32_t*)100) = 0xFFFFFFFF;
-  uint16_t fib_result = fib(10);
-  *((uint32_t*)100) = fib_result;
+  *((int*)0) = 0xDEADBEEF;
+  int fib_result = fib(6);
+  *((int*)0) = fib_result;
   while(1){;}
 
 }

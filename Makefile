@@ -17,6 +17,7 @@ OUTPUT_BIN       =  $(SYNTH_BUILD_DIR)/test.bin
 
 all: sim 
 clean:
+	rm result.txt 
 	rm a.out 
 	rm tb_top.vcd
 	rm -rf $(SYNTH_BUILD_DIR)
@@ -24,7 +25,7 @@ clean:
 sim: $(IVERILOG_SRCS) test/Makefile
 	cd test && make
 	iverilog $(IVERILOG_SRCS) $(IVERILOG_FLAGS) -Irtl 
-	./a.out > result.txt
+	./a.out
 	gtkwave tb_top.vcd
 
 synth: $(SYNTH_V_SRCS)

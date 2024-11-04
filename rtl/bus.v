@@ -51,7 +51,7 @@ module bus (
 
 
   mem_bram  #(
-    .MEM_SIZE(2**10),
+    .MEM_SIZE(2**16),
     .MEM_DUMP_SIZE(200),
     .MEM_FILE("test/build/kernel.txt"),
     .HARDWIRE_X0(1'b0)

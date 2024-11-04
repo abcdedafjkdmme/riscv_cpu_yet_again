@@ -21,6 +21,7 @@ module mem_bram #(
   localparam S_READ = 1;
   localparam S_END_READ = 2;
   localparam S_WRITE = 3;
+  localparam S_END_WRITE = 4;
 
   integer r_state = S_IDLE;
 
@@ -76,10 +77,20 @@ module mem_bram #(
       o_wb_stall <= 0;
       o_wb_ack <= 1;
       r_state <= S_IDLE;
-    end else if (r_state == S_WRITE) begin
+      if(!HARDWIRE_X0) begin
+        $display("mem finished read");
+        $display("mem read %h from addr %h", bram_o_data,local_addr);
+      end
+    end else if(r_state == S_WRITE) begin
+      r_state <= S_END_WRITE;
+    end else if (r_state == S_END_WRITE) begin
       o_wb_stall <= 0;
       o_wb_ack <= 1;
       r_state <= S_IDLE;
+      if(!HARDWIRE_X0) begin
+        $display("mem finished write");
+        $display("mem wrote %h to addr %h", bram[local_addr], local_addr);
+      end
     end
   end
 
