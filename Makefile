@@ -18,9 +18,10 @@ OUTPUT_BIN       =  $(SYNTH_BUILD_DIR)/test.bin
 
 all: sim 
 clean:
-	rm result.txt 
-	rm a.out 
-	rm tb_top.vcd
+	rm -f result.txt 
+	rm -f console_output.txt
+	rm *.out 
+	rm *.vcd
 	rm -rf $(SYNTH_BUILD_DIR)
 
 lint: rtl/soc.v 

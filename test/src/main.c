@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 int fib(int n){
   if(n == 0){
@@ -18,6 +19,17 @@ int fib(int n){
 //   else return n * fact(n-1);
 // }
 
+#define CON_ADDR 0xFFFFFFF1
+
+void write_char_to_console(char data){
+  *((char*)CON_ADDR) = data;
+}
+
+void write_str_to_console(char* data, size_t len){
+  for(int i = 0; i < len; i++){
+    write_char_to_console(data[i]);
+  }
+}
 
 int main(){
   //*((int*)0) = 0xDEADBEEF;
@@ -33,6 +45,13 @@ int main(){
   float b = 32.423;
   float res = b / a;
   *((float*)4) = res;
+
+  char test_str[] = "arkb bark";
+  char test_str_2[] = "12345";
+
+  write_str_to_console(test_str,strlen(test_str));
+  write_str_to_console(test_str_2,strlen(test_str_2));
+
   while(1){;}
 
 }
