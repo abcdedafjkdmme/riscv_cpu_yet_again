@@ -42,7 +42,7 @@ module cpu_mem_controller (
 
   always @(*) begin
     o_wb_addr = 32'hFFFFFFFF;
-    if (local_sel == 'b001 || local_sel == 'b101 && byte_offset == 'b11) begin
+    if ((local_sel == 'b001 || local_sel == 'b101) && byte_offset == 'b11) begin
       o_wb_addr = local_word_addr + 1;
     end else begin
       o_wb_addr = local_word_addr;

@@ -25,9 +25,10 @@ int main(){
   //*((uint8_t*)1) = 0x11;
   //*((uint8_t*)2) = 0x99;
   //int fib_result = fib(4);
+  *((uint16_t*)0) = 0x23DE;
 
-  int fact_result = fib(6);
-  *((int*)0) = fact_result;
+  //int fact_result = fib(6);
+  //*((uint16_t*)0) = fact_result;
   while(1){;}
 
 }

@@ -26,7 +26,7 @@ module tb_top;
   // end
   initial begin
     #10 reset <= 0;
-    #200000 $finish;
+    #2000 $finish;
   end
 
 endmodule

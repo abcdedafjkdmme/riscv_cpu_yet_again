@@ -80,8 +80,8 @@ module mem_bram #(
       o_wb_ack <= 1;
       r_state <= S_IDLE;
       if(!HARDWIRE_X0) begin
-        //$display("mem finished read");
-        //$display("mem read %h from addr %h", bram_o_data,local_addr);
+        $display("mem finished read");
+        $display("mem read %h from addr %h", bram_o_data,local_addr);
       end
     end else if(r_state == S_WRITE) begin
       r_state <= S_END_WRITE;
@@ -90,8 +90,8 @@ module mem_bram #(
       o_wb_ack <= 1;
       r_state <= S_IDLE;
       if(!HARDWIRE_X0) begin
-        //$display("mem finished write");
-        //$display("mem wrote %h to addr %h", bram[local_addr], local_addr);
+        $display("mem finished write");
+        $display("mem wrote %h to addr %h", bram[local_addr], local_addr);
       end
     end
   end
