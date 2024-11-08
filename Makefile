@@ -1,7 +1,7 @@
 PCF_FILE         =  test.pcf
 VCD_FILE 		     =  tb_top.vcd
 SBY_FILE 		     =  formal/test.sby
-SYNTH_V_SRCS     =  rtl/soc.v rtl/bus.v rtl/mem_bram.v rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v
+SYNTH_V_SRCS     =  rtl/soc.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v
 SYNTH_TOP_MODULE =  soc
 
 IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/alu.v rtl/bus.v
@@ -21,6 +21,10 @@ clean:
 	rm a.out 
 	rm tb_top.vcd
 	rm -rf $(SYNTH_BUILD_DIR)
+
+lint: rtl/soc.v 
+
+	verilator --lint-only -Wall -Wno-fatal rtl/soc.v -Irtl
 
 sim: $(IVERILOG_SRCS) test/Makefile
 	cd test && make

@@ -27,6 +27,7 @@ module mem_bram #(
 
   reg [31:0] local_data = 32'hFFFFFFFF;
   reg [31:0] local_addr = 32'hFFFFFFFF;
+  reg [3:0] local_sel = 4'b0000;
 
   reg [31:0] bram[MEM_SIZE];
 
@@ -50,12 +51,12 @@ module mem_bram #(
       r_state <= S_IDLE;
       local_data <= 32'hFFFFFFFF;
       local_addr <= 32'hFFFFFFFF;
-      bram_o_data <= 32'hFFFFFFFF;
+      local_sel <= 4'b1111;
+      //bram_o_data <= 32'hFFFFFFFF;
       o_wb_ack <= 0;
       o_wb_stall <= 0;
       o_wb_data <= 32'hFFFFFFFF;
-    end
-    if (r_state == S_IDLE) begin
+    end else if (r_state == S_IDLE) begin
       o_wb_ack   <= 0;
       o_wb_stall <= 0;
       if (i_wb_stb && !o_wb_stall) begin
@@ -66,6 +67,7 @@ module mem_bram #(
         end else begin
           local_addr <= i_wb_addr;
           local_data <= i_wb_data;
+          local_sel <= i_wb_sel;
           o_wb_stall <= 1;
           r_state <= i_wb_we ? S_WRITE : S_READ;
         end
@@ -78,8 +80,8 @@ module mem_bram #(
       o_wb_ack <= 1;
       r_state <= S_IDLE;
       if(!HARDWIRE_X0) begin
-        $display("mem finished read");
-        $display("mem read %h from addr %h", bram_o_data,local_addr);
+        //$display("mem finished read");
+        //$display("mem read %h from addr %h", bram_o_data,local_addr);
       end
     end else if(r_state == S_WRITE) begin
       r_state <= S_END_WRITE;
@@ -88,28 +90,26 @@ module mem_bram #(
       o_wb_ack <= 1;
       r_state <= S_IDLE;
       if(!HARDWIRE_X0) begin
-        $display("mem finished write");
-        $display("mem wrote %h to addr %h", bram[local_addr], local_addr);
+        //$display("mem finished write");
+        //$display("mem wrote %h to addr %h", bram[local_addr], local_addr);
       end
     end
   end
 
   always @(posedge i_clk) begin
-    if ((r_state == S_WRITE) && i_wb_sel[3]) begin
+    if ((r_state == S_WRITE) && local_sel[3]) begin
       bram[local_addr][31:24] <= local_data[31:24];
     end
-    if ((r_state == S_WRITE) && i_wb_sel[2]) begin
+    if ((r_state == S_WRITE) && local_sel[2]) begin
       bram[local_addr][23:16] <= local_data[23:16];
     end
-    if ((r_state == S_WRITE) && i_wb_sel[1]) begin
+    if ((r_state == S_WRITE) && local_sel[1]) begin
       bram[local_addr][15:8] <= local_data[15:8];
     end
-    if ((r_state == S_WRITE) && i_wb_sel[0]) begin
+    if ((r_state == S_WRITE) && local_sel[0]) begin
       bram[local_addr][7:0] <= local_data[7:0];
     end
-
   end
-
 
   always @(posedge i_clk) begin
     if (r_state == S_READ) begin

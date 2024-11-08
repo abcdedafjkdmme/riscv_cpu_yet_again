@@ -20,6 +20,7 @@ module bus (
   wire mem_i_wb_we;
   wire [31:0] mem_o_wb_data;
   wire [31:0] mem_i_wb_addr;
+  wire [31:0] mem_i_wb_data;
   wire [3:0] mem_i_wb_sel;
   wire mem_o_wb_ack;
   wire mem_o_wb_stall;
@@ -33,12 +34,14 @@ module bus (
     .i_clk         (i_clk         ),
     .i_reset       (i_reset       ),
     .i_wb_stb      (mcntrl_i_wb_stb),
+    .i_wb_data     (i_wb_data     ),
     .i_wb_addr     (i_wb_addr     ),
     .i_wb_we       (i_wb_we       ),
     .i_wb_ack      (mem_o_wb_ack  ),
     .i_wb_stall    (mem_o_wb_stall),
     .i_sel         (i_wb_sel      ),
     .i_mem_wb_data (mem_o_wb_data ),
+    .o_mem_wb_data (mem_i_wb_data ),
     .o_wb_stb      (mem_i_wb_stb  ),
     .o_wb_we       (mem_i_wb_we   ),
     .o_wb_addr     (mem_i_wb_addr ),
@@ -52,7 +55,7 @@ module bus (
 
   mem_bram  #(
     .MEM_SIZE(2**16),
-    .MEM_DUMP_SIZE(200),
+    .MEM_DUMP_SIZE(2**10),
     .MEM_FILE("test/build/kernel.txt"),
     .HARDWIRE_X0(1'b0)
   ) u_mem_bram
@@ -60,7 +63,7 @@ module bus (
       .i_clk  (i_clk),
       .i_reset(i_reset),
       .i_wb_stb (mem_i_wb_stb),
-      .i_wb_data (i_wb_data),
+      .i_wb_data (mem_i_wb_data),
       .i_wb_addr (mem_i_wb_addr),
       .i_wb_sel  (mem_i_wb_sel),
       .i_wb_we   (mem_i_wb_we),

@@ -32,6 +32,7 @@ module cpu (
   parameter S_END_RD = 11;
   parameter S_INC = 12;
   parameter S_PAUSED = 13;
+  parameter S_UNKNOWN_INSTR = 14;
 
   integer r_state = S_IDLE;
 
@@ -141,7 +142,7 @@ module cpu (
         o_wb_we   <= 0;
         o_wb_stb  <= 1;
         r_state   <= S_END_MEM_READ;
-        $display("cpu requeseted read from mem");
+        //$display("cpu requeseted read from mem");
       end
     end else if (r_state == S_END_MEM_READ) begin
       o_wb_stb <= 0;
@@ -252,6 +253,7 @@ module cpu (
         r_state <= S_WRITE_RD;
       end else begin
         $display("ERROR UNKNOWN INSTR %b at addr %h", instr, pc);
+        r_state <= S_UNKNOWN_INSTR;
         //$finish();
       end
     end else if (r_state == S_END_MEM_READ_INSTR) begin
@@ -282,8 +284,6 @@ module cpu (
       if (reg_file_o_wb_ack) begin
         r_state <= S_INC;
       end 
-    end else if(r_state == S_PAUSED) begin
-      $display("cpu is stalled");
     end else if (r_state == S_INC) begin
       $display("cpu finished instr");
       $display("\n");
@@ -291,6 +291,11 @@ module cpu (
       o_wb_ack <= 1;
       o_wb_stall <= 0;
       r_state <= S_IDLE;
+    end else if(r_state == S_PAUSED) begin
+      $display("cpu is stalled");
+    end else if(r_state == S_UNKNOWN_INSTR) begin 
+      $display("ERR cpu unknwon instr");
+      r_state <= S_UNKNOWN_INSTR;
     end else begin
       $display("ERR cpu in undefined state");
       //$finish();

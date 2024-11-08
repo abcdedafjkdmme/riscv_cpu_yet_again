@@ -1,5 +1,5 @@
 SHELL = /bin/sh
-ARCH = riscv64-unknown-elf
+ARCH = /opt/riscv/bin/riscv32-unknown-elf
 CC = $(ARCH)-gcc
 LD = $(ARCH)-ld
 OBJDUMP = $(ARCH)-objdump
@@ -9,7 +9,7 @@ SDIR = src
 BDIR = build
 CFLAGS = -Wall -march=rv32i -mabi=ilp32 -g -I $(IDIR) -O0
 SFLAGS = $(CFLAGS)
-LDFLAGS = -lgcc
+LDFLAGS = -lgcc -nostartfiles
 OBJDUMPFLAGS = -D
 OBJCOPY	=  $(ARCH)-objcopy
 S_SRCS 	=  $(wildcard $(SDIR)/*.s)
@@ -32,7 +32,7 @@ kernel.elf.dis: kernel.elf
 	$(OBJDUMP) $(OBJDUMPFLAGS) $(BDIR)/kernel.elf > $(BDIR)/kernel.elf.dis 
 
 kernel.elf: link.ld $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS)
-	$(CC) $(LDFLAGS) -T link.ld -o build/kernel.elf $(S_OBJS) $(C_OBJS) -lgcc -nostartfiles
+	$(CC) -T link.ld -o build/kernel.elf $(S_OBJS) $(C_OBJS)  $(LDFLAGS) 
 
 
 $(BDIR)/%.o: $(SDIR)/%.c

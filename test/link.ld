@@ -11,7 +11,7 @@ SECTIONS
   .rodata : { *(.rodata) }
   .sdata : { *(.sdata) }
   .debug : { *(.debug) }
-  . += 0x8000;
+  . += 0x800;
   stack_top = .;
 
   /* End of uninitalized data segement */
