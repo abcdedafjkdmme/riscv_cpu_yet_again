@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 
 int fib(int n){
   if(n == 0){
@@ -26,9 +27,12 @@ int main(){
   //*((uint8_t*)2) = 0x99;
   //int fib_result = fib(4);
   *((uint16_t*)0) = 0x23DE;
-
-  //int fact_result = fib(6);
-  //*((uint16_t*)0) = fact_result;
+  int fact_result = fib(5);
+  *((uint16_t*)0) = fact_result;
+  float a = 4.223;
+  float b = 32.423;
+  float res = b / a;
+  *((float*)4) = res;
   while(1){;}
 
 }

@@ -48,7 +48,7 @@ module cpu (
   wire reg_file_o_wb_ack;
   wire reg_file_o_wb_stall;
 
-  mem_bram #(.MEM_SIZE(32),.MEM_DUMP_SIZE(32),.MEM_FILE("reg_file.txt"),.HARDWIRE_X0(1'b1)) u_reg_file (
+  mem_bram #(.MEM_SIZE(32),.MEM_DUMP_SIZE(32),.MEM_FILE("reg_file.txt"),.HARDWIRE_X0(1'b1),.PRINT_INFO_EN(1'b0)) u_reg_file (
       .i_clk     (i_clk),
       .i_reset   (i_reset),
       .i_wb_stb  (reg_file_i_wb_stb),
@@ -142,7 +142,7 @@ module cpu (
         o_wb_we   <= 0;
         o_wb_stb  <= 1;
         r_state   <= S_END_MEM_READ;
-        //$display("cpu requeseted read from mem");
+        $display("cpu requeseted read from mem");
       end
     end else if (r_state == S_END_MEM_READ) begin
       o_wb_stb <= 0;

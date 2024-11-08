@@ -123,7 +123,7 @@ module cpu_mem_controller (
       o_wb_data <= 32'hFFFFFFFF;
       r_state <= S_IDLE;
     end
-    if (r_state == S_IDLE) begin
+    else if (r_state == S_IDLE) begin
       o_wb_ack <= 0;
       if (i_wb_stb && !o_wb_stall) begin
         local_addr <= i_wb_addr;

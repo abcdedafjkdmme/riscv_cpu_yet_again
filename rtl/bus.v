@@ -12,10 +12,9 @@ module bus (
     output wire o_wb_stall
 );
 
-  parameter MEM_ADDR_START = 'h0;
-  parameter MEM_ADDR_END = 'hFFFF_FF00;
 
-  
+
+
   wire mem_i_wb_stb;
   wire mem_i_wb_we;
   wire [31:0] mem_o_wb_data;
@@ -55,9 +54,10 @@ module bus (
 
   mem_bram  #(
     .MEM_SIZE(2**16),
-    .MEM_DUMP_SIZE(2**10),
+    .MEM_DUMP_SIZE(2**4),
     .MEM_FILE("test/build/kernel.txt"),
-    .HARDWIRE_X0(1'b0)
+    .HARDWIRE_X0(1'b0),
+    .PRINT_INFO_EN(1'b1)
   ) u_mem_bram
   (
       .i_clk  (i_clk),
@@ -72,35 +72,62 @@ module bus (
       .o_wb_stall (mem_o_wb_stall)
   );
 
+  reg con_i_wb_stb;
+  wire con_o_wb_ack;
+  wire con_o_wb_stall;
+
+  console u_console(
+    .i_clk      (i_clk      ),
+    .i_reset    (i_reset    ),
+    .i_wb_stb   (con_i_wb_stb   ),
+    .i_wb_data  (i_wb_data  ),
+    .o_wb_ack   (con_o_wb_ack   ),
+    .o_wb_stall (con_o_wb_stall )
+  );
   
+
+  
+
+  parameter MEM_ADDR_START = 'h0;
+  parameter MEM_ADDR_END = 32'hFFFF_FF00;
+
+  parameter CON_ADDR= 32'hFFFF_FFF1;
 
   parameter SLAVE_NONE = 0;
   parameter SLAVE_MEM = 1;
+  parameter SLAVE_CON = 2;
   reg [31:0] w_active_slave;
 
   always @(*) begin
     w_active_slave = SLAVE_NONE;
     if(i_wb_addr >= MEM_ADDR_START && i_wb_addr <= MEM_ADDR_END) begin
       w_active_slave = SLAVE_MEM;
+    end else if (i_wb_addr == CON_ADDR) begin
+      w_active_slave = SLAVE_CON;
     end
   end
 
   always @(*) begin
     mcntrl_i_wb_stb = 0;
+    con_i_wb_stb = 0;
     case (w_active_slave)
       SLAVE_NONE: ;
       SLAVE_MEM: mcntrl_i_wb_stb = i_wb_stb;
+      SLAVE_CON: con_i_wb_stb = i_wb_stb;
       default: $display("ERROR in bus");
     endcase
   end
 
-  assign o_wb_stall = mcntrl_o_wb_stall;
+  assign o_wb_stall = mcntrl_o_wb_stall | con_o_wb_stall;
   
   always @(*) begin
     o_wb_ack = 0;
     o_wb_data = 32'hFFFFFFFF;
     if(mcntrl_o_wb_ack) begin
       o_wb_data = mcntrl_o_wb_data;
+      o_wb_ack = 1;
+    end else if(con_o_wb_ack) begin
+      o_wb_data = 32'hFFFFFFFF;
       o_wb_ack = 1;
     end
   end

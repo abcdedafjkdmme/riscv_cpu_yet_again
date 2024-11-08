@@ -3,7 +3,8 @@ module mem_bram #(
     parameter MEM_SIZE = 2 ** 10,
     parameter MEM_DUMP_SIZE = 2 ** 10,
     parameter MEM_FILE = "reg_file.txt",
-    parameter HARDWIRE_X0 = 1'b0
+    parameter HARDWIRE_X0 = 1'b0,
+    parameter PRINT_INFO_EN = 1'b0
 ) (
     input wire i_clk,
     input wire i_reset,
@@ -79,7 +80,7 @@ module mem_bram #(
       o_wb_stall <= 0;
       o_wb_ack <= 1;
       r_state <= S_IDLE;
-      if(!HARDWIRE_X0) begin
+      if(PRINT_INFO_EN) begin
         $display("mem finished read");
         $display("mem read %h from addr %h", bram_o_data,local_addr);
       end
@@ -89,7 +90,7 @@ module mem_bram #(
       o_wb_stall <= 0;
       o_wb_ack <= 1;
       r_state <= S_IDLE;
-      if(!HARDWIRE_X0) begin
+      if(PRINT_INFO_EN) begin
         $display("mem finished write");
         $display("mem wrote %h to addr %h", bram[local_addr], local_addr);
       end

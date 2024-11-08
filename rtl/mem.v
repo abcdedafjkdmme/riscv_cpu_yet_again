@@ -50,8 +50,7 @@ module mem #(
   always @(posedge i_clk) begin
     if (i_reset) begin
       r_state <= S_IDLE;
-    end
-    if (r_state == S_IDLE) begin
+    end else if (r_state == S_IDLE) begin
       if (i_wb_stb && !o_wb_stall) begin
         if(i_wb_addr > MEM_SIZE*4) begin
           $display("ERR mem address is larger than mem size");
