@@ -36,14 +36,14 @@ module cpu (
 
   integer r_state = S_IDLE;
 
-  reg [31:0] pc = 32'hFFFFFFFF;
-  reg [31:0] instr = 32'hFFFFFFFF;
+  reg [31:0] pc;
+  reg [31:0] instr;
 
 
   reg reg_file_i_wb_stb = 0;
   reg reg_file_i_wb_we = 0;
-  reg [31:0] reg_file_i_wb_addr = 32'hFFFFFFFF;
-  reg [31:0] reg_file_i_wb_data = 32'hFFFFFFFF;
+  reg [31:0] reg_file_i_wb_addr;
+  reg [31:0] reg_file_i_wb_data;
   wire [31:0] reg_file_o_wb_data;
   wire reg_file_o_wb_ack;
   wire reg_file_o_wb_stall;
@@ -61,9 +61,9 @@ module cpu (
       .o_wb_stall(reg_file_o_wb_stall)
   );
 
-  reg [31:0] r_rs1 = 32'hFFFFFFFF;
-  reg [31:0] r_rs2 = 32'hFFFFFFFF;
-  reg [31:0] r_rd = 32'hFFFFFFFF;
+  reg [31:0] r_rs1;
+  reg [31:0] r_rs2;
+  reg [31:0] r_rd ;
 
   wire [31:0] rs1 = {{27{1'b0}},instr[19:15]};
   wire [31:0] rs2 = {{27{1'b0}},instr[24:20]};

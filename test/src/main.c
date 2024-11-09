@@ -1,58 +1,100 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <console.h>
 
-int fib(int n){
-  if(n == 0){
+int fib(int n)
+{
+  if (n == 0)
+  {
     return 0;
   }
-  else if(n == 1){
+  else if (n == 1)
+  {
     return 1;
   }
-  else{
-    return fib(n-1) + fib(n-2);
+  else
+  {
+    return fib(n - 1) + fib(n - 2);
   }
 }
 
-// int fact(int n){
-//   if(n == 1) return 1;
-//   else return n * fact(n-1);
-// }
+int _write(int handle, char *data, int size)
+{
+  int count;
 
-#define CON_ADDR 0xFFFFFFF1
+  handle = handle; // unused
 
-void write_char_to_console(char data){
-  *((char*)CON_ADDR) = data;
-}
-
-void write_str_to_console(char* data, size_t len){
-  for(int i = 0; i < len; i++){
-    write_char_to_console(data[i]);
+  for (count = 0; count < size; count++)
+  {
+    write_char_to_console(data[count]); // Your low-level output function here.
   }
+
+  return count;
 }
 
-int main(){
+const char *ascii_art = R""""(
+$$$$$$$\   $$$$$$\   $$$$$$\ $$$$$$$$\ $$$$$$\ $$\   $$\  $$$$$$\  
+$$  __$$\ $$  __$$\ $$  __$$\\__$$  __|\_$$  _|$$$\  $$ |$$  __$$\ 
+$$ |  $$ |$$ /  $$ |$$ /  $$ |  $$ |     $$ |  $$$$\ $$ |$$ /  \__|
+$$$$$$$\ |$$ |  $$ |$$ |  $$ |  $$ |     $$ |  $$ $$\$$ |$$ |$$$$\ 
+$$  __$$\ $$ |  $$ |$$ |  $$ |  $$ |     $$ |  $$ \$$$$ |$$ |\_$$ |
+$$ |  $$ |$$ |  $$ |$$ |  $$ |  $$ |     $$ |  $$ |\$$$ |$$ |  $$ |
+$$$$$$$  | $$$$$$  | $$$$$$  |  $$ |   $$$$$$\ $$ | \$$ |\$$$$$$  |
+\_______/  \______/  \______/   \__|   \______|\__|  \__| \______/   
+                                                                                               
+)"""";
+
+const char *ascii_art_2 = R""""(
+$$$$$$$\  $$$$$$\  $$$$$$\   $$$$$$\   $$\    $$\ 
+$$  __$$\ \_$$  _|$$  __$$\ $$  __$$\  $$ |   $$ |
+$$ |  $$ |  $$ |  $$ /  \__|$$ /  \__| $$ |   $$ |
+$$$$$$$  |  $$ |  \$$$$$$\  $$ |$$$$$$\\$$\  $$  |
+$$  __$$<   $$ |   \____$$\ $$ |\______|\$$\$$  / 
+$$ |  $$ |  $$ |  $$\   $$ |$$ |  $$\    \$$$  /  
+$$ |  $$ |$$$$$$\ \$$$$$$  |\$$$$$$  |    \$  /   
+\__|  \__|\______| \______/  \______/      \_/    
+                                                                                                                                                 
+  )"""";
+
+
+#define SHUTDOWN_ADDR 0xFFFFFFF2
+
+int main()
+{
+
+  write_strn_to_console(ascii_art);
+  write_strn_to_console("\n");
+  write_strn_to_console(ascii_art_2);
+  write_strn_to_console("\n");
+
   //*((int*)0) = 0xDEADBEEF;
   ////*((uint8_t*)0) = 0x04;
   //*((uint8_t*)0) = 0x35;
   //*((uint8_t*)1) = 0x11;
   //*((uint8_t*)2) = 0x99;
-  //int fib_result = fib(4);
-  *((uint16_t*)0) = 0x23DE;
-  int fact_result = fib(5);
-  *((uint16_t*)0) = fact_result;
+  // int fib_result = fib(4);
+  *((int *)0) = 0x23DE;
+  int fact_result = fib(7);
+  *((int *)0) = fact_result;
+  if (fact_result == 13)
+  {
+    write_strn_to_console("fib successful \n");
+  }
+
   float a = 4.223;
   float b = 32.423;
   float res = b / a;
-  *((float*)4) = res;
+  *((float *)4) = res;
 
-  char test_str[] = "arkb bark";
-  char test_str_2[] = "12345";
+  write_strn_to_console("ark bark \n");
 
-  write_str_to_console(test_str,strlen(test_str));
-  write_str_to_console(test_str_2,strlen(test_str_2));
+  *((uint8_t*)SHUTDOWN_ADDR) = 1;
 
-  while(1){;}
+  write_strn_to_console("ERR this shouldnt print \n");
 
+  while (1)
+  {
+    ;
+  }
 }
-

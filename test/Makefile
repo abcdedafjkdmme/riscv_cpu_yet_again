@@ -4,7 +4,7 @@ CC = $(ARCH)-gcc
 LD = $(ARCH)-ld
 OBJDUMP = $(ARCH)-objdump
 OBJCOPY = $(ARCH)-objcopy
-IDIR = inc
+IDIR = src
 SDIR = src
 BDIR = build
 CFLAGS = -Wall -march=rv32i -mabi=ilp32 -g -I $(IDIR) -O0
@@ -31,12 +31,13 @@ kernel.hex: kernel.elf kernel.elf.dis
 kernel.elf.dis: kernel.elf
 	$(OBJDUMP) $(OBJDUMPFLAGS) $(BDIR)/kernel.elf > $(BDIR)/kernel.elf.dis 
 
-kernel.elf: link.ld $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS)
+kernel.elf: link.ld $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS) 
 	$(CC) -T link.ld -o build/kernel.elf $(S_OBJS) $(C_OBJS)  $(LDFLAGS) 
 
-
-$(BDIR)/%.o: $(SDIR)/%.c
+$(BDIR)/%.o: $(SDIR)/%.c 
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(SDIR)/%.c : $(SDIR)/%.h 
 
 $(BDIR)/%_asm.o: $(SDIR)/%.s
 	$(CC) $(SFLAGS) -c $< -o $@

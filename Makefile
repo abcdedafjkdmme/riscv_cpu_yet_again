@@ -1,12 +1,11 @@
 PCF_FILE         =  test.pcf
 VCD_FILE 		     =  tb_top.vcd
 SBY_FILE 		     =  formal/test.sby
-SYNTH_V_SRCS     =  rtl/soc.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v rtl/console.v
+SYNTH_V_SRCS     =  rtl/soc.v rtl/defines.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v rtl/console.v 
 SYNTH_TOP_MODULE =  soc
 
-IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/alu.v rtl/bus.v rtl/console.v
-
-IVERILOG_FLAGS   =  -Irtl -dCPU_SIM_DISPLAY_DISABLED
+IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller_fixed.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/alu.v rtl/bus.v rtl/console.v
+IVERILOG_FLAGS   =  -Irtl
  
 YOSYS_FLAGS      =  -p 'synth_ice40 -json $(OUTPUT_JSON)'
 NEXTPNR_FLAGS    =  --hx8k --package ct256 --pcf-allow-unconstrained --placed-svg synth_build/place.svg --routed-svg synth_build/route.svg
@@ -16,23 +15,28 @@ OUTPUT_ASC       =  $(SYNTH_BUILD_DIR)/test.asc
 OUTPUT_JSON      =  $(SYNTH_BUILD_DIR)/test.json
 OUTPUT_BIN       =  $(SYNTH_BUILD_DIR)/test.bin
 
-all: sim 
+SIM_OUT_FILE     = result.txt 
+
+all: sim_display_console 
 clean:
-	rm -f result.txt 
+	rm -f sim_result.txt 
 	rm -f console_output.txt
 	rm *.out 
 	rm *.vcd
 	rm -rf $(SYNTH_BUILD_DIR)
+	cd test && make clean
 
 lint: rtl/soc.v 
-
 	verilator --lint-only -Wall -Wno-fatal rtl/soc.v -Irtl
+
+sim_display_console: sim
+	cat console_output.txt
 
 sim: $(IVERILOG_SRCS) test/Makefile
 	cd test && make
-	iverilog $(IVERILOG_SRCS) $(IVERILOG_FLAGS) -Irtl 
-	./a.out
-	gtkwave $(VCD_FILE)
+	iverilog $(IVERILOG_FLAGS) $(IVERILOG_SRCS) 
+	./a.out > $(SIM_OUT_FILE)
+	
 
 synth: $(SYNTH_V_SRCS)
 	mkdir -p $(SYNTH_BUILD_DIR)

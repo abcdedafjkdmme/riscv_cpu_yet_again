@@ -4,13 +4,13 @@ module tb_top;
 
   reg clk = 0;
   reg reset = 1;
-  
-
+  wire shutdown;
 
   soc u_soc(
     .i_clk   (clk   ),
     .i_reset (reset ),
-    .i_stb   (1'b1  )
+    .i_stb   (1'b1  ),
+    .o_shutdown(shutdown)
   );
   
   localparam CLK_PERIOD = 2;
@@ -21,12 +21,16 @@ module tb_top;
     $dumpvars(0, tb_top);
   end
 
-  // always @(posedge clk) begin
-  //   $display("cpu mem ack %b at time %t", mem_o_wb_ack, $time);
-  // end
+
+  localparam MAX_SIM_TIME = 200000000;
+
   initial begin
     #10 reset <= 0;
-    #200000 $finish;
+    #MAX_SIM_TIME $finish;
+  end
+
+  always @(posedge clk) begin
+    if(shutdown) $finish;
   end
 
 endmodule

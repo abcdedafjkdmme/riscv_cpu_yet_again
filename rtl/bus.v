@@ -1,3 +1,5 @@
+`include "defines.v"
+
 `default_nettype none
 module bus (
     input wire i_clk,
@@ -9,7 +11,8 @@ module bus (
     input wire [2:0] i_wb_sel,  //'b000- 8 bits 'b001- 16 bits 'b010- 32 bits
     output reg [31:0] o_wb_data,  //'b100 - 8 bits zero extend 'b101 - 16 bits zero extend
     output reg o_wb_ack,
-    output wire o_wb_stall
+    output wire o_wb_stall,
+    output wire o_shutdown
 );
 
 
@@ -53,8 +56,6 @@ module bus (
 
 
   mem_bram  #(
-    .MEM_SIZE(2**16),
-    .MEM_DUMP_SIZE(2**4),
     .MEM_FILE("test/build/kernel.txt"),
     .HARDWIRE_X0(1'b0),
     .PRINT_INFO_EN(1'b1)
@@ -71,6 +72,15 @@ module bus (
       .o_wb_ack  (mem_o_wb_ack),
       .o_wb_stall (mem_o_wb_stall)
   );
+
+
+`ifdef SIM 
+  defparam u_mem_bram.MEM_SIZE = 2**16;
+  defparam u_mem_bram.MEM_DUMP_SIZE= 4;
+`else 
+  defparam u_mem_bram.MEM_SIZE = 2**5;
+  defparam u_mem_bram.MEM_DUMP_SIZE= 1;
+`endif
 
   reg con_i_wb_stb;
   wire con_o_wb_ack;
@@ -93,10 +103,15 @@ module bus (
 
   parameter CON_ADDR= 32'hFFFF_FFF1;
 
+  parameter SHUTDOWN_ADDR = 32'hFFFF_FFF2;
+
   parameter SLAVE_NONE = 0;
   parameter SLAVE_MEM = 1;
   parameter SLAVE_CON = 2;
+  parameter SLAVE_SHUTDOWN = 3;
   reg [31:0] w_active_slave;
+
+  assign o_shutdown = (w_active_slave == SLAVE_SHUTDOWN) && i_wb_we && (i_wb_data == 1);
 
   always @(*) begin
     w_active_slave = SLAVE_NONE;
@@ -104,6 +119,8 @@ module bus (
       w_active_slave = SLAVE_MEM;
     end else if (i_wb_addr == CON_ADDR) begin
       w_active_slave = SLAVE_CON;
+    end else if (i_wb_addr == SHUTDOWN_ADDR) begin
+      w_active_slave = SLAVE_SHUTDOWN;
     end
   end
 
@@ -114,6 +131,7 @@ module bus (
       SLAVE_NONE: ;
       SLAVE_MEM: mcntrl_i_wb_stb = i_wb_stb;
       SLAVE_CON: con_i_wb_stb = i_wb_stb;
+      SLAVE_SHUTDOWN: ;
       default: $display("ERROR in bus");
     endcase
   end
@@ -128,6 +146,8 @@ module bus (
       o_wb_ack = 1;
     end else if(con_o_wb_ack) begin
       o_wb_data = 32'hFFFFFFFF;
+      o_wb_ack = 1;
+    end else if(w_active_slave == SLAVE_SHUTDOWN) begin
       o_wb_ack = 1;
     end
   end

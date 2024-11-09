@@ -4,7 +4,8 @@ module soc (
   input wire i_reset,
   input wire i_stb,
   output wire o_stall,
-  output wire o_ack
+  output wire o_ack,
+  output wire o_shutdown
 );
 
   wire        bus_i_wb_stb;
@@ -27,10 +28,11 @@ module soc (
     .i_wb_sel   (bus_i_wb_sel   ),
     .o_wb_data  (bus_o_wb_data  ),
     .o_wb_ack   (bus_o_wb_ack   ),
-    .o_wb_stall (bus_o_wb_stall )
+    .o_wb_stall (bus_o_wb_stall ),
+    .o_shutdown (o_shutdown)
   );
   
-
+  
   cpu u_cpu (
       .i_clk     (i_clk),
       .i_reset   (i_reset),

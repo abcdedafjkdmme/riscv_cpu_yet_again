@@ -40,6 +40,7 @@ module cpu_mem_controller (
   assign local_word_addr = local_addr >> 2;
   wire [1:0] byte_offset = local_addr[1:0];
 
+
   always @(*) begin
     o_wb_addr = 32'hFFFFFFFF;
     if ((local_sel == 'b001 || local_sel == 'b101) && byte_offset == 'b11) begin
@@ -126,6 +127,10 @@ module cpu_mem_controller (
     else if (r_state == S_IDLE) begin
       o_wb_ack <= 0;
       if (i_wb_stb && !o_wb_stall) begin
+        if(i_wb_addr[1:0] != 2'b00) begin
+          //$display("MEMCNTRL ERR currently not supporting misalgined access");
+          //$finish;
+        end
         local_addr <= i_wb_addr;
         local_data <= i_wb_data;
         local_we <= i_wb_we;

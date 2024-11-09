@@ -47,7 +47,9 @@ always @(posedge clk) begin
   else if(r_state == S_IDLE) begin
     if(!stall) begin
       stb <= 1;
-      data <= $urandom_range(32,126);
+      if ($value$plusargs("STRING=%s",data)) begin
+        $display("got input");
+      end
       r_state <= S_END;
     end
   end else if(r_state == S_END) begin
