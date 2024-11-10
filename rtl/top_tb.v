@@ -22,7 +22,7 @@ module tb_top;
   end
 
 
-  localparam MAX_SIM_TIME = 200000000;
+  localparam MAX_SIM_TIME = 20000000;
 
   initial begin
     #10 reset <= 0;

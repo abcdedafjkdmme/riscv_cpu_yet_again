@@ -1,6 +1,5 @@
 #ifndef RISCV_CONSOLE_H
 #define RISCV_CONSOLE_H
-#endif
 
 #include <stdint.h>
 #include <stdio.h>
@@ -27,3 +26,5 @@ void write_strn_to_console(const char *data)
 {
   write_str_to_console(data, strlen(data));
 }
+
+#endif

@@ -76,10 +76,10 @@ module bus (
 
 `ifdef SIM 
   defparam u_mem_bram.MEM_SIZE = 2**16;
-  defparam u_mem_bram.MEM_DUMP_SIZE= 4;
+  defparam u_mem_bram.MEM_DUMP_SIZE= 2**16;
 `else 
   defparam u_mem_bram.MEM_SIZE = 2**5;
-  defparam u_mem_bram.MEM_DUMP_SIZE= 1;
+  defparam u_mem_bram.MEM_DUMP_SIZE= 0;
 `endif
 
   reg con_i_wb_stb;

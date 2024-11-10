@@ -20,12 +20,7 @@ module cpu_mem_controller (
     output reg o_wb_stall
 );
 
-  localparam S_IDLE = 0;
-  localparam S_BEGIN_WRITE = 1;
-  localparam S_BEGIN_READ = 2;
-  localparam S_END_READ = 3;
-  localparam S_END_WRITE = 4;
-  reg [4:0] r_state = S_IDLE;
+
 
   reg [31:0] local_data = 32'hFFFFFFFF;
   reg [31:0] local_addr = 32'hFFFFFFFF;
@@ -41,14 +36,26 @@ module cpu_mem_controller (
   wire [1:0] byte_offset = local_addr[1:0];
 
 
-  always @(*) begin
-    o_wb_addr = 32'hFFFFFFFF;
-    if ((local_sel == 'b001 || local_sel == 'b101) && byte_offset == 'b11) begin
-      o_wb_addr = local_word_addr + 1;
-    end else begin
-      o_wb_addr = local_word_addr;
-    end
-  end
+
+
+
+
+  localparam S_IDLE = 0;
+
+  localparam S_BEGIN_READ_0 = 1;
+  localparam S_END_READ_0 = 2;
+  localparam S_BEGIN_READ_1 = 3;
+  localparam S_END_READ_1 = 4;
+  localparam S_FIN_READ_COMP = 5;
+
+  localparam S_BEGIN_WRITE_0 = 6;
+  localparam S_END_WRITE_0 = 7;
+  localparam S_BEGIN_WRITE_1 = 8;
+  localparam S_END_WRITE_1 = 9;
+
+  integer r_state = S_IDLE;
+
+  //for mem writes 
 
   always @(*) begin
     o_wb_sel = 4'b000;
@@ -82,39 +89,51 @@ module cpu_mem_controller (
         o_mem_wb_data = {local_data[15:0], {16{1'b1}}};
         o_wb_sel = 4'b1100;
       end else if (byte_offset == 2'b11) begin
-        o_mem_wb_data = {{16{1'b1}}, local_data[15:0]};
-        o_wb_sel = 4'b0011;
+        if (r_state == S_BEGIN_WRITE_0 || r_state == S_END_WRITE_0) begin
+          o_mem_wb_data = {local_data[7:0], {24{1'b1}}};
+          o_wb_sel = 4'b1000;
+        end else if (r_state == S_BEGIN_WRITE_1 || r_state == S_END_WRITE_1) begin
+          o_mem_wb_data = {{24{1'b1}}, local_data[15:8]};
+          o_wb_sel = 4'b0001;
+        end
       end
     end
   end
+
+  // for mem reads 
+
+  reg [31:0] r_data_0;
+  reg [31:0] r_data_1;
 
   reg [31:0] r_wb_data;
   always @(*) begin
     r_wb_data = 32'hFFFFFFFF;
     if (local_sel == 3'b000) begin
-      if (byte_offset == 2'b00) r_wb_data = {{24{i_mem_wb_data[7]}}, i_mem_wb_data[7:0]};
-      else if (byte_offset == 2'b01) r_wb_data = {{24{i_mem_wb_data[15]}}, i_mem_wb_data[15:8]};
-      else if (byte_offset == 2'b10) r_wb_data = {{24{i_mem_wb_data[23]}}, i_mem_wb_data[23:16]};
-      else if (byte_offset == 2'b11) r_wb_data = {{24{i_mem_wb_data[31]}}, i_mem_wb_data[31:24]};
+      if (byte_offset == 2'b00) r_wb_data = {{24{r_data_0[7]}}, r_data_0[7:0]};
+      else if (byte_offset == 2'b01) r_wb_data = {{24{r_data_0[15]}}, r_data_0[15:8]};
+      else if (byte_offset == 2'b10) r_wb_data = {{24{r_data_0[23]}}, r_data_0[23:16]};
+      else if (byte_offset == 2'b11) r_wb_data = {{24{r_data_0[31]}}, r_data_0[31:24]};
     end else if (local_sel == 3'b100) begin
-      if (byte_offset == 2'b00) r_wb_data = {{24{1'b0}}, i_mem_wb_data[7:0]};
-      else if (byte_offset == 2'b01) r_wb_data = {{24{1'b0}}, i_mem_wb_data[15:8]};
-      else if (byte_offset == 2'b10) r_wb_data = {{24{1'b0}}, i_mem_wb_data[23:16]};
-      else if (byte_offset == 2'b11) r_wb_data = {{24{1'b0}}, i_mem_wb_data[31:24]};
+      if (byte_offset == 2'b00) r_wb_data = {{24{1'b0}}, r_data_0[7:0]};
+      else if (byte_offset == 2'b01) r_wb_data = {{24{1'b0}}, r_data_0[15:8]};
+      else if (byte_offset == 2'b10) r_wb_data = {{24{1'b0}}, r_data_0[23:16]};
+      else if (byte_offset == 2'b11) r_wb_data = {{24{1'b0}}, r_data_0[31:24]};
     end else if (local_sel == 3'b001) begin
-      if (byte_offset == 2'b00) r_wb_data = {{16{i_mem_wb_data[15]}}, i_mem_wb_data[15:0]};
-      else if (byte_offset == 2'b01) r_wb_data = {{16{i_mem_wb_data[23]}}, i_mem_wb_data[23:8]};
-      else if (byte_offset == 2'b10) r_wb_data = {{16{i_mem_wb_data[31]}}, i_mem_wb_data[31:16]};
-      else if (byte_offset == 2'b11) r_wb_data = {{16{i_mem_wb_data[15]}}, i_mem_wb_data[15:0]};
+      if (byte_offset == 2'b00) r_wb_data = {{16{r_data_0[15]}}, r_data_0[15:0]};
+      else if (byte_offset == 2'b01) r_wb_data = {{16{r_data_0[23]}}, r_data_0[23:8]};
+      else if (byte_offset == 2'b10) r_wb_data = {{16{r_data_0[31]}}, r_data_0[31:16]};
+      else if (byte_offset == 2'b11)
+        r_wb_data = {{16{r_data_1[7]}}, r_data_1[7:0], r_data_0[31:24]};
     end else if (local_sel == 3'b101) begin
-      if (byte_offset == 2'b00) r_wb_data = {{16{1'b0}}, i_mem_wb_data[15:0]};
-      else if (byte_offset == 2'b01) r_wb_data = {{16{1'b0}}, i_mem_wb_data[23:8]};
-      else if (byte_offset == 2'b10) r_wb_data = {{16{1'b0}}, i_mem_wb_data[31:16]};
-      else if (byte_offset == 2'b11) r_wb_data = {{16{1'b0}}, i_mem_wb_data[15:0]};
+      if (byte_offset == 2'b00) r_wb_data = {{16{1'b0}}, r_data_0[15:0]};
+      else if (byte_offset == 2'b01) r_wb_data = {{16{1'b0}}, r_data_0[23:8]};
+      else if (byte_offset == 2'b10) r_wb_data = {{16{1'b0}}, r_data_0[31:16]};
+      else if (byte_offset == 2'b11) r_wb_data = {{16{1'b0}}, r_data_1[7:0], r_data_0[31:24]};
     end else if (local_sel == 'b010) begin
-      r_wb_data = i_mem_wb_data;
+      r_wb_data = r_data_0;
     end
   end
+
 
   always @(posedge i_clk) begin
     if (i_reset) begin
@@ -122,41 +141,77 @@ module cpu_mem_controller (
       o_wb_stall <= 0;
       o_wb_stb <= 0;
       o_wb_data <= 32'hFFFFFFFF;
+      o_wb_addr <= 32'hFFFFFFFF;
       r_state <= S_IDLE;
-    end
-    else if (r_state == S_IDLE) begin
-      o_wb_ack <= 0;
+    end else if (r_state == S_IDLE) begin
+      o_wb_ack  <= 0;
+      o_wb_data <= 32'hFFFFFFFF;
+      o_wb_addr <= 32'hFFFFFFFF;
       if (i_wb_stb && !o_wb_stall) begin
-        if(i_wb_addr[1:0] != 2'b00) begin
-          //$display("MEMCNTRL ERR currently not supporting misalgined access");
-          //$finish;
-        end
         local_addr <= i_wb_addr;
         local_data <= i_wb_data;
         local_we <= i_wb_we;
         local_sel <= i_sel;
         o_wb_stall <= 1;
-        r_state <= i_wb_we ? S_BEGIN_WRITE : S_BEGIN_READ;
+        r_state <= i_wb_we ? S_BEGIN_WRITE_0 : S_BEGIN_READ_0;
       end
-    end else if (r_state == S_BEGIN_READ) begin
+    end else if (r_state == S_BEGIN_READ_0) begin
       if (!i_wb_stall) begin
-        o_wb_stb <= 1;
-        r_state  <= S_END_READ;
+        o_wb_stb  <= 1;
+        o_wb_addr <= local_word_addr;
+        r_state   <= S_END_READ_0;
       end
-    end else if (r_state == S_END_READ) begin
+    end else if (r_state == S_END_READ_0) begin
       o_wb_stb <= 0;
       if (i_wb_ack) begin
-        o_wb_ack <= 1;
-        o_wb_stall <= 0;
-        o_wb_data <= r_wb_data;
-        r_state <= S_IDLE;
+        r_data_0 <= i_mem_wb_data;
+        if ((local_sel == 'b001 || local_sel == 'b101) && byte_offset == 'b11) begin
+          r_state <= S_BEGIN_READ_1;
+        end else begin
+          r_state <= S_FIN_READ_COMP;
+        end
       end
-    end else if (r_state == S_BEGIN_WRITE) begin
+    end else if (r_state == S_BEGIN_READ_1) begin
       if (!i_wb_stall) begin
-        o_wb_stb <= 1;
-        r_state  <= S_END_WRITE;
+        o_wb_stb  <= 1;
+        o_wb_addr <= local_word_addr + 1;
+        r_state   <= S_END_READ_1;
       end
-    end else if (r_state == S_END_WRITE) begin
+    end else if (r_state == S_END_READ_1) begin
+      o_wb_stb <= 0;
+      if (i_wb_ack) begin
+        r_data_1 <= i_mem_wb_data;
+        r_state  <= S_FIN_READ_COMP;
+      end
+    end else if (r_state == S_FIN_READ_COMP) begin
+      o_wb_ack <= 1;
+      o_wb_stall <= 0;
+      o_wb_data <= r_wb_data;
+      r_state <= S_IDLE;
+    end else if (r_state == S_BEGIN_WRITE_0) begin
+      if (!i_wb_stall) begin
+        o_wb_addr <= local_word_addr;
+        o_wb_stb  <= 1;
+        r_state   <= S_END_WRITE_0;
+      end
+    end else if (r_state == S_END_WRITE_0) begin
+      o_wb_stb <= 0;
+      if (i_wb_ack) begin
+        if ((local_sel == 'b001 || local_sel == 'b101) && byte_offset == 'b11) begin
+          r_state <= S_BEGIN_WRITE_1;
+        end else begin
+          o_wb_ack <= 1;
+          o_wb_stall <= 0;
+          r_state <= S_IDLE;
+        end
+      end
+    end else if (r_state == S_BEGIN_WRITE_1) begin
+      if (!i_wb_stall) begin
+        o_wb_addr <= local_word_addr + 1;
+        o_wb_stb  <= 1;
+        r_state   <= S_END_WRITE_1;
+      end
+    end else if (r_state == S_END_WRITE_1) begin
       o_wb_stb <= 0;
       if (i_wb_ack) begin
         o_wb_ack <= 1;

@@ -4,7 +4,7 @@ SBY_FILE 		     =  formal/test.sby
 SYNTH_V_SRCS     =  rtl/soc.v rtl/defines.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v rtl/console.v 
 SYNTH_TOP_MODULE =  soc
 
-IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller_fixed.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/alu.v rtl/bus.v rtl/console.v
+IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller.v rtl/mem_bram.v rtl/macros.v rtl/top_tb.v rtl/cpu.v rtl/alu.v rtl/bus.v rtl/console.v
 IVERILOG_FLAGS   =  -Irtl
  
 YOSYS_FLAGS      =  -p 'synth_ice40 -json $(OUTPUT_JSON)'
@@ -19,7 +19,7 @@ SIM_OUT_FILE     = result.txt
 
 all: sim_display_console 
 clean:
-	rm -f sim_result.txt 
+	rm -f $(SIM_OUT_FILE)
 	rm -f console_output.txt
 	rm *.out 
 	rm *.vcd
