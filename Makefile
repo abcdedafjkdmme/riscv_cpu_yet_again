@@ -34,16 +34,14 @@ lint: rtl/soc.v
 sim_display_console: sim
 	cat $(SIM_BDIR)/console_output.txt
 
-sim: $(IVERILOG_SRCS) test
+sim: test/Makefile $(IVERILOG_SRCS) 
 	mkdir -p $(SIM_BDIR)
+	cd test && make
 	cp test/build/kernel.txt $(SIM_BDIR)/kernel.txt
 	cp res/reg_file.txt $(SIM_BDIR)/reg_file.txt
 	iverilog $(IVERILOG_FLAGS) $(IVERILOG_SRCS) -o $(SIM_BDIR)/a.out
 	cd $(SIM_BDIR) && ./a.out
 
-test: test/Makefile
-	cd test && make
-	
 
 synth: $(SYNTH_V_SRCS) test
 	mkdir -p $(SYNTH_BDIR)
