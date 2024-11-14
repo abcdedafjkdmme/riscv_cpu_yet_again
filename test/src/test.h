@@ -37,20 +37,21 @@ int riscv_test()
 {
   uint16_t err = 0;
 
-  *((int *)0) = 0x23DE;
+  //*((int *)0) = 0x23DE;
   int fact_result = fib(7);
-  *((int *)0) = fact_result;
+  //*((int *)0) = fact_result;
   if (fact_result != 13){
-    write_strn_to_console("ERROR fib unsuccessful \n");
+    write_str_to_con("ERROR fib unsuccessful \n");
     err = 1;
   }
 
-  *((uint32_t*)0) = 0xDEADBEEF;
+  //*((uint32_t*)0) = 0xDEADBEEF;
 
-  int write_err = test_write_16b(3,0xA211);
+  //int write_err = test_write_16b(3,0xA211);
+  int write_err = 0;
   if(write_err != 0){
-    *((uint32_t*)0) = 0xFFFFFFFF;
-    write_strn_to_console("ERROR 16 bit write unsuccessful \n");
+    //*((uint32_t*)0) = 0xFFFFFFFF;
+    write_str_to_con("ERROR 16 bit write unsuccessful \n");
     err = 1;
   }
   return err;

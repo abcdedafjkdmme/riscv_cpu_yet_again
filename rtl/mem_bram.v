@@ -1,8 +1,10 @@
+`include "defines.v"
+
 `default_nettype none
 module mem_bram #(
     parameter MEM_SIZE = 2 ** 10,
     parameter MEM_DUMP_SIZE = 2 ** 10,
-    parameter MEM_FILE = "reg_file.txt",
+    parameter MEM_FILE = `DEFAULT_BRAM_MEM_FILE,
     parameter HARDWIRE_X0 = 1'b0,
     parameter PRINT_INFO_EN = 1'b0
 ) (
@@ -26,9 +28,9 @@ module mem_bram #(
 
   integer r_state = S_IDLE;
 
-  reg [31:0] local_data = 32'hFFFFFFFF;
-  reg [31:0] local_addr = 32'hFFFFFFFF;
-  reg [3:0] local_sel = 4'b0000;
+  reg [31:0] local_data;
+  reg [31:0] local_addr;
+  reg [3:0] local_sel;
 
   reg [31:0] bram[MEM_SIZE];
 
@@ -81,8 +83,8 @@ module mem_bram #(
       o_wb_ack <= 1;
       r_state <= S_IDLE;
       if(PRINT_INFO_EN) begin
-        $display("mem finished read");
-        $display("mem read %h from addr %h", bram_o_data,local_addr);
+        //$display("mem finished read");
+        //$display("mem read %h from addr %h", bram_o_data,local_addr);
       end
     end else if(r_state == S_WRITE) begin
       r_state <= S_END_WRITE;
@@ -91,8 +93,8 @@ module mem_bram #(
       o_wb_ack <= 1;
       r_state <= S_IDLE;
       if(PRINT_INFO_EN) begin
-        $display("mem finished write");
-        $display("mem wrote %h to addr %h", bram[local_addr], local_addr);
+        //$display("mem finished write");
+        //$display("mem wrote %h to addr %h", bram[local_addr], local_addr);
       end
     end
   end

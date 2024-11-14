@@ -1,11 +1,12 @@
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 #include "console.h"
 #include "shutdown.h"
 #include "test.h"
 
 
-const char *ascii_art = R""""(
+const char *ascii_art = R""""( 
 $$$$$$$\   $$$$$$\   $$$$$$\ $$$$$$$$\ $$$$$$\ $$\   $$\  $$$$$$\  
 $$  __$$\ $$  __$$\ $$  __$$\\__$$  __|\_$$  _|$$$\  $$ |$$  __$$\ 
 $$ |  $$ |$$ /  $$ |$$ /  $$ |  $$ |     $$ |  $$$$\ $$ |$$ /  \__|
@@ -35,27 +36,27 @@ $$ |  $$ |$$$$$$\ \$$$$$$  |\$$$$$$  |    \$  /
 int main()
 {
 
-  write_strn_to_console(ascii_art);
-  write_strn_to_console("\n");
-  write_strn_to_console(ascii_art_2);
-  write_strn_to_console("\n");
+  write_str_to_con(ascii_art);
+  write_str_to_con("\n");
+  write_str_to_con(ascii_art_2);
+  write_str_to_con("\n");
 
-  //*((int*)0) = 0xDEADBEEF;
-  ////*((uint8_t*)0) = 0x04;
-  //*((uint8_t*)0) = 0x35;
-  //*((uint8_t*)1) = 0x11;
-  //*((uint8_t*)2) = 0x99;
-  // int fib_result = fib(4);
+
   
+  uint16_t arr[3] = {1,3,0};
+
   
   riscv_test();
-  
-  write_strn_to_console("ark bark \n");
 
+  char str[20];
+  sprintf(str, "%d", 42);
+  write_str_to_con("\n");
+  write_str_to_con(str);
+  write_str_to_con("\n");
+
+  write_str_to_con("Cpu Ended Successfully\n");
   riscv_shutdown();
-
-  write_strn_to_console("ERR this shouldnt print \n");
-
+  write_str_to_con("ERR this shouldnt print \n");
   while (1)
   {
     ;

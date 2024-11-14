@@ -1,9 +1,6 @@
 build/
-.vscode/
 synth_build/
-*.out
-*.vcd
-*.o 
-*.hex 
-*.elf 
+sim_build/
 test/build/
+*.vcd
+.vscode/

@@ -1,8 +1,11 @@
+`include "defines.v"
+
 `default_nettype none
 module soc (
   input wire i_clk,
   input wire i_reset,
   input wire i_stb,
+  input wire i_close_file,
   output wire o_stall,
   output wire o_ack,
   output wire o_shutdown
@@ -29,11 +32,14 @@ module soc (
     .o_wb_data  (bus_o_wb_data  ),
     .o_wb_ack   (bus_o_wb_ack   ),
     .o_wb_stall (bus_o_wb_stall ),
-    .o_shutdown (o_shutdown)
+    .o_shutdown (o_shutdown),
+    .i_close_file(i_close_file)
   );
   
   
-  cpu u_cpu (
+  cpu #(
+    .REG_FILE(`REG_FILE)
+  )u_cpu(
       .i_clk     (i_clk),
       .i_reset   (i_reset),
       .i_wb_stb  (i_stb),

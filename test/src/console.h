@@ -13,7 +13,7 @@ void write_char_to_console(const char data)
   *((char *)CON_ADDR) = data;
 }
 
-void write_str_to_console(const char *data, const size_t len)
+void write_strn_to_con(const char *data, const size_t len)
 {
   
   for (int i = 0; i < len; i++)
@@ -22,9 +22,9 @@ void write_str_to_console(const char *data, const size_t len)
   }
 }
 
-void write_strn_to_console(const char *data)
+void write_str_to_con(const char *data)
 {
-  write_str_to_console(data, strlen(data));
+  write_strn_to_con(data, strlen(data));
 }
 
 #endif

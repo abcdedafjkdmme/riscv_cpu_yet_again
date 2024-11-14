@@ -14,6 +14,7 @@ OBJDUMPFLAGS = -D
 OBJCOPY	=  $(ARCH)-objcopy
 S_SRCS 	=  $(wildcard $(SDIR)/*.s)
 C_SRCS 	=  $(wildcard $(SDIR)/*.c)
+C_HEADERS = $(wildcard $(SDIR)/*.h)
 S_OBJS 	=  $(S_SRCS:$(SDIR)/%.s=$(BDIR)/%_asm.o)
 C_OBJS 	=  $(C_SRCS:$(SDIR)/%.c=$(BDIR)/%.o)
 S_OBJ_DUMPS = $(S_OBJS:$(BDIR)/%.o=$(BDIR)/%.o.dis)
@@ -31,13 +32,12 @@ kernel.hex: kernel.elf kernel.elf.dis
 kernel.elf.dis: kernel.elf
 	$(OBJDUMP) $(OBJDUMPFLAGS) $(BDIR)/kernel.elf > $(BDIR)/kernel.elf.dis 
 
-kernel.elf: link.ld $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS) 
+kernel.elf: link.ld $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS) $(C_HEADERS)
 	$(CC) -T link.ld -o build/kernel.elf $(S_OBJS) $(C_OBJS)  $(LDFLAGS) 
 
-$(BDIR)/%.o: $(SDIR)/%.c 
+$(BDIR)/%.o: $(SDIR)/%.c $(C_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(SDIR)/%.c : $(SDIR)/%.h 
 
 $(BDIR)/%_asm.o: $(SDIR)/%.s
 	$(CC) $(SFLAGS) -c $< -o $@

@@ -8,6 +8,7 @@ module bus (
     input wire [31:0] i_wb_data,
     input wire [31:0] i_wb_addr,
     input wire i_wb_we,
+    input wire i_close_file,
     input wire [2:0] i_wb_sel,  //'b000- 8 bits 'b001- 16 bits 'b010- 32 bits
     output reg [31:0] o_wb_data,  //'b100 - 8 bits zero extend 'b101 - 16 bits zero extend
     output reg o_wb_ack,
@@ -56,7 +57,9 @@ module bus (
 
 
   mem_bram  #(
-    .MEM_FILE("test/build/kernel.txt"),
+    .MEM_FILE(`MEM_FILE),
+    .MEM_SIZE(`MEM_SIZE),
+    .MEM_DUMP_SIZE(`MEM_DUMP_SIZE),
     .HARDWIRE_X0(1'b0),
     .PRINT_INFO_EN(1'b1)
   ) u_mem_bram
@@ -73,15 +76,7 @@ module bus (
       .o_wb_stall (mem_o_wb_stall)
   );
 
-
-`ifdef SIM 
-  defparam u_mem_bram.MEM_SIZE = 2**16;
-  defparam u_mem_bram.MEM_DUMP_SIZE= 2**16;
-`else 
-  defparam u_mem_bram.MEM_SIZE = 2**5;
-  defparam u_mem_bram.MEM_DUMP_SIZE= 0;
-`endif
-
+`ifdef SIM
   reg con_i_wb_stb;
   wire con_o_wb_ack;
   wire con_o_wb_stall;
@@ -92,16 +87,20 @@ module bus (
     .i_wb_stb   (con_i_wb_stb   ),
     .i_wb_data  (i_wb_data  ),
     .o_wb_ack   (con_o_wb_ack   ),
-    .o_wb_stall (con_o_wb_stall )
+    .o_wb_stall (con_o_wb_stall ),
+    .i_close_file(i_close_file)
   );
-  
+
+  parameter CON_ADDR= 32'hFFFF_FFF1;
+
+`endif
 
   
 
   parameter MEM_ADDR_START = 'h0;
   parameter MEM_ADDR_END = 32'hFFFF_FF00;
 
-  parameter CON_ADDR= 32'hFFFF_FFF1;
+ 
 
   parameter SHUTDOWN_ADDR = 32'hFFFF_FFF2;
 
@@ -117,26 +116,38 @@ module bus (
     w_active_slave = SLAVE_NONE;
     if(i_wb_addr >= MEM_ADDR_START && i_wb_addr <= MEM_ADDR_END) begin
       w_active_slave = SLAVE_MEM;
-    end else if (i_wb_addr == CON_ADDR) begin
+    end 
+`ifdef SIM
+    else if (i_wb_addr == CON_ADDR) begin
       w_active_slave = SLAVE_CON;
-    end else if (i_wb_addr == SHUTDOWN_ADDR) begin
+    end 
+`endif
+    else if (i_wb_addr == SHUTDOWN_ADDR) begin
       w_active_slave = SLAVE_SHUTDOWN;
     end
   end
 
   always @(*) begin
     mcntrl_i_wb_stb = 0;
+`ifdef SIM
     con_i_wb_stb = 0;
+`endif
     case (w_active_slave)
       SLAVE_NONE: ;
       SLAVE_MEM: mcntrl_i_wb_stb = i_wb_stb;
+`ifdef SIM
       SLAVE_CON: con_i_wb_stb = i_wb_stb;
+`endif
       SLAVE_SHUTDOWN: ;
       default: $display("ERROR in bus");
     endcase
   end
 
-  assign o_wb_stall = mcntrl_o_wb_stall | con_o_wb_stall;
+  assign o_wb_stall = mcntrl_o_wb_stall 
+`ifdef SIM
+  | con_o_wb_stall
+`endif
+  ;
   
   always @(*) begin
     o_wb_ack = 0;
@@ -144,10 +155,14 @@ module bus (
     if(mcntrl_o_wb_ack) begin
       o_wb_data = mcntrl_o_wb_data;
       o_wb_ack = 1;
-    end else if(con_o_wb_ack) begin
+    end 
+`ifdef SIM
+    else if(con_o_wb_ack) begin
       o_wb_data = 32'hFFFFFFFF;
       o_wb_ack = 1;
-    end else if(w_active_slave == SLAVE_SHUTDOWN) begin
+    end
+`endif
+    else if(w_active_slave == SLAVE_SHUTDOWN) begin
       o_wb_ack = 1;
     end
   end

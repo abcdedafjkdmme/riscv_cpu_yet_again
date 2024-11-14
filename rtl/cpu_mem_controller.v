@@ -22,21 +22,17 @@ module cpu_mem_controller (
 
 
 
-  reg [31:0] local_data = 32'hFFFFFFFF;
-  reg [31:0] local_addr = 32'hFFFFFFFF;
-  reg local_we = 1;
-  reg [2:0] local_sel = 'b000;
+  reg [31:0] local_data;
+  reg [31:0] local_addr;
+  reg local_we;
+  reg [2:0] local_sel;
 
 
   assign o_wb_we = local_we;
 
 
-  wire [31:0] local_word_addr;
-  assign local_word_addr = local_addr >> 2;
+  wire [31:0] local_word_addr = local_addr >> 2;
   wire [1:0] byte_offset = local_addr[1:0];
-
-
-
 
 
 
