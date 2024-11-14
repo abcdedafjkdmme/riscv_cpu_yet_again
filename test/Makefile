@@ -32,9 +32,12 @@ kernel.hex: kernel.elf kernel.elf.dis
 kernel.elf.dis: kernel.elf
 	$(OBJDUMP) $(OBJDUMPFLAGS) $(BDIR)/kernel.elf > $(BDIR)/kernel.elf.dis 
 
-kernel.elf: link.ld $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS) $(C_HEADERS)
+kernel.elf: link.ld create_bdir $(S_OBJS) $(C_OBJS)  $(S_OBJ_DUMPS) $(C_OBJ_DUMPS) $(C_HEADERS)
 	$(CC) -T link.ld -o build/kernel.elf $(S_OBJS) $(C_OBJS)  $(LDFLAGS) 
 
+create_bdir:
+	mkdir -p $(BDIR)
+ 
 $(BDIR)/%.o: $(SDIR)/%.c $(C_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
