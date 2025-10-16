@@ -1,3 +1,6 @@
+# Description 
+This is a riscv cpu made for fpgas
+
 # Requirements
 
 ### For building the firmware
