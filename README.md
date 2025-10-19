@@ -1,7 +1,9 @@
-# Description 
+# RISC-V CPU Yet Again
+
+## Description 
 This is a riscv cpu made for fpgas
 
-# Requirements
+## Requirements
 
 ### For building the firmware
 - riscv gnu toolchain (march=rv32i mabi=ilp32)
@@ -17,18 +19,20 @@ This is a riscv cpu made for fpgas
 - nextpnr-ice40
 - icepack
 
-## Synthesize for lattice ic40 fpgas
+## Usage
+
+### Synthesize for lattice ic40 fpgas
 ```sh
 make synth
 ```
 
-## Simulate using iverilog
+### Simulate using iverilog
 
 ```sh
 make
 ```
 
-## Simulate using verilator
+### Simulate using verilator
 
 ```sh 
 mkdir build
