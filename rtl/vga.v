@@ -1,0 +1,5 @@
+module vga (
+  ports
+);
+  
+endmodule
