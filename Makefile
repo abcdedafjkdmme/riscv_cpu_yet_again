@@ -17,6 +17,9 @@ OUTPUT_BIN       =  $(SYNTH_BDIR)/test.bin
 SIM_OUT_FILE     = /dev/null 
 SIM_BDIR    		 = sim_build
 
+
+.PHONY: all clean lint sim_display_console sim synth 
+
 all: sim_display_console 
 
 clean:
