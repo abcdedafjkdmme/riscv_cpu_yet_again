@@ -1,5 +1,4 @@
 PCF_FILE         =  test.pcf
-VCD_FILE 		     =  tb_top.vcd
 SBY_FILE 		     =  formal/test.sby
 SYNTH_V_SRCS     =  rtl/soc.v rtl/defines.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v
 SYNTH_TOP_MODULE =  soc
@@ -24,9 +23,6 @@ clean:
 	rm -rf $(SIM_BDIR)
 	rm -rf $(SYNTH_BDIR)
 	cd test && make clean
-
-view_vcd:
-	gtkwave $(VCD_FILE)
 
 lint: rtl/soc.v 
 	verilator --lint-only -Wall -Wno-fatal rtl/soc.v -Irtl
