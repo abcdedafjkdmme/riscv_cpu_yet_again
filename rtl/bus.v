@@ -139,7 +139,7 @@ module bus (
       SLAVE_CON: con_i_wb_stb = i_wb_stb;
 `endif
       SLAVE_SHUTDOWN: ;
-      default: $display("ERROR in bus");
+      default: ;// $display("ERROR in bus");
     endcase
   end
 
