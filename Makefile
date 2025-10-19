@@ -1,6 +1,6 @@
 PCF_FILE         =  test.pcf
 SBY_FILE 		     =  formal/test.sby
-SYNTH_V_SRCS     =  rtl/soc.v rtl/defines.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v
+SYNTH_V_SRCS     =  rtl/defines.v rtl/bus.v rtl/mem_bram.v  rtl/cpu_mem_controller.v rtl/cpu.v rtl/alu.v rtl/macros.v rtl/soc.v 
 SYNTH_TOP_MODULE =  soc
 
 IVERILOG_SRCS	   =  rtl/soc.v rtl/cpu_mem_controller.v rtl/mem_bram.v rtl/macros.v rtl/tb_top.v rtl/cpu.v rtl/alu.v rtl/bus.v rtl/console.v
@@ -44,7 +44,7 @@ synth: $(SYNTH_V_SRCS)
 	make -C test
 	cp test/build/kernel.txt $(SYNTH_BDIR)/kernel.txt
 	cp res/reg_file.txt $(SYNTH_BDIR)/reg_file.txt
-	yosys $(YOSYS_FLAGS) $(SYNTH_V_SRCS) > $(SYNTH_BDIR)/yosys_result.txt
+	yosys $(YOSYS_FLAGS) $(SYNTH_V_SRCS)
 	nextpnr-ice40 $(NEXTPNR_FLAGS) --top $(SYNTH_TOP_MODULE) --pcf $(PCF_FILE) --json $(OUTPUT_JSON) --asc $(OUTPUT_ASC) > $(SYNTH_BDIR)/nextpnr_result.txt
 	icepack $(OUTPUT_ASC) $(OUTPUT_BIN) > $(SYNTH_BDIR)/icepack_result.txt
 
