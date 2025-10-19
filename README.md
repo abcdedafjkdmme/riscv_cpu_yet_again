@@ -39,5 +39,5 @@ mkdir build
 cd build
 cmake ..
 cmake --build .
-./fpga_playground
+./riscv_cpu_yet_again
 ```

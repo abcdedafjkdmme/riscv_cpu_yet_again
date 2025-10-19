@@ -1,5 +1,5 @@
 SHELL = /bin/sh
-ARCH = /opt/riscv/bin/riscv32-unknown-elf
+ARCH = riscv32-unknown-elf
 CC = $(ARCH)-gcc
 LD = $(ARCH)-ld
 OBJDUMP = $(ARCH)-objdump

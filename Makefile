@@ -37,18 +37,18 @@ sim_display_console: sim
 sim: test/Makefile $(IVERILOG_SRCS) 
 	mkdir -p $(SIM_BDIR)
 	cd test && make
+	make -C test
 	cp test/build/kernel.txt $(SIM_BDIR)/kernel.txt
 	cp res/reg_file.txt $(SIM_BDIR)/reg_file.txt
 	iverilog $(IVERILOG_FLAGS) $(IVERILOG_SRCS) -o $(SIM_BDIR)/a.out
 	cd $(SIM_BDIR) && ./a.out
 
-
-synth: $(SYNTH_V_SRCS) test
+synth: $(SYNTH_V_SRCS) 
 	mkdir -p $(SYNTH_BDIR)
+	make -C test
 	cp test/build/kernel.txt $(SYNTH_BDIR)/kernel.txt
 	cp res/reg_file.txt $(SYNTH_BDIR)/reg_file.txt
 	yosys $(YOSYS_FLAGS) $(SYNTH_V_SRCS) > $(SYNTH_BDIR)/yosys_result.txt
 	nextpnr-ice40 $(NEXTPNR_FLAGS) --top $(SYNTH_TOP_MODULE) --pcf $(PCF_FILE) --json $(OUTPUT_JSON) --asc $(OUTPUT_ASC) > $(SYNTH_BDIR)/nextpnr_result.txt
 	icepack $(OUTPUT_ASC) $(OUTPUT_BIN) > $(SYNTH_BDIR)/icepack_result.txt
-
 
