@@ -16,9 +16,9 @@ add_executable(riscv_cpu_yet_again ${CXX_SRCS})
 
 set_property(TARGET riscv_cpu_yet_again PROPERTY CXX_STANDARD 20)
 
-find_package(Curses REQUIRED)
-target_link_libraries(riscv_cpu_yet_again PRIVATE ${CURSES_LIBRARIES})
-target_include_directories(riscv_cpu_yet_again PRIVATE ${CURSES_INCLUDE_DIRS})
+#find_package(Curses REQUIRED)
+#target_link_libraries(riscv_cpu_yet_again PRIVATE ${CURSES_LIBRARIES})
+#target_include_directories(riscv_cpu_yet_again PRIVATE ${CURSES_INCLUDE_DIRS})
 
 target_include_directories(riscv_cpu_yet_again PRIVATE ${CXX_INCLUDE_DIRS})
 
